@@ -1,0 +1,94 @@
+$(document).on("change",".dropdown",function(){
+    if ($(this).val() != ""){
+        $(this).closest(".validate-input").find(".label-state").hide()
+    }else{
+        $(this).closest(".validate-input").find(".label-state").show()
+    }
+})
+
+$(document).on("change",".checkbox-company",function(){
+    if($(this). prop("checked") == true){
+        $(".show-company-inputs").show()
+    }else{
+        $(".show-company-inputs").hide()
+    }
+})
+
+$(document).on("change",".checkbox-firm",function(){
+    if($(this). prop("checked") == true){
+        $(".show-firm-inputs").show()
+    }else{
+        $(".show-firm-inputs").hide()
+    }
+})
+
+$(document).on("click",".btn-signup",function(e){
+    view_state = $(".view-state").val()
+switch(view_state ){
+
+    case "1":
+        e.preventDefault()
+        var flag = 0;
+        $(".form-inp").each(function(){
+            if ($(this).val() == ""){
+                $(this).closest(".wrap-input100").css("border-color","red")
+                flag = 1;
+            }else{
+                $(this).closest(".wrap-input100").css("border-color","#e6e6e6")
+            }
+        })
+        if (flag == 0){
+            $(".show-section1").hide()
+            $(".show-section3").show()
+            $(".view-state").val("3")
+        }
+        break;
+    case "2":
+        e.preventDefault()
+        var flag = 0;
+        $(".form-inp").each(function(){
+            if ($(this).val() == ""){
+                flag = 1;
+            }
+        })
+        if (flag == 0){
+            if ($(".checkbox-terms").prop("checked") == false){
+                $(".label-terms").addClass("checkbox-err")
+            }else{
+                $(".label-terms").removeClass("checkbox-err")
+                $(".show-section2").hide()
+                $(".show-section3").show()
+                $(".view-state").val("3")
+            }
+        }
+        break;
+    case "4":
+        e.preventDefault()
+        $(".show-section3").hide()
+        $(".show-section4").show()
+        $(".view-state").val("4")
+        break;
+    case "3":
+        e.preventDefault()
+        var data = new FormData($('.signup-form').get(0))
+        data.append('csrfmiddlewaretoken',"{{csrf_token}}")
+        $(".view-state").val("5")
+        $.ajax({
+            type: "POST",
+            data: data,
+            processData: false,
+            contentType: false,
+            success: function(result){
+                alert("Registration Successful")
+                location.href = "/";
+            },
+            error: function(xhr, status, error){
+                alert("Something went wrong! Please reload your page");
+            }
+        })
+        break;
+
+}
+
+
+})

@@ -1,0 +1,16 @@
+// @import "bourbon"; //Uncomment if you are not using Prepross
+
+// Global requirements
+@import "partials/variables";
+@import "partials/mixins";
+
+// Basecoat
+@import "partials/normalize";
+@import "partials/base";
+@import "partials/type";
+@import "partials/forms";
+@import "partials/tables";
+
+// Custom Styles
+@import "partials/style";
+@import "partials/mediaqueries";

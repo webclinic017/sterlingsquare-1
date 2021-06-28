@@ -1,0 +1,70 @@
+
+
+@font-face {
+    font-family: 'poppinsbold';
+    src: url('poppins/poppins-bold.woff2') format('woff2'),
+         url('poppins/poppins-bold.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'poppinslight';
+    src: url('poppins/poppins-light.woff2') format('woff2'),
+         url('poppins/poppins-light.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'poppinsmedium';
+    src: url('poppins/poppins-medium.woff2') format('woff2'),
+         url('poppins/poppins-medium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'poppinsregular';
+    src: url('poppins/poppins-regular.woff2') format('woff2'),
+         url('poppins/poppins-regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'poppinssemibold';
+    src: url('poppins/poppins-semibold.woff2') format('woff2'),
+         url('poppins/poppins-semibold.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'poppinsthin';
+    src: url('poppins/poppins-thin.woff2') format('woff2'),
+         url('poppins/poppins-thin.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}

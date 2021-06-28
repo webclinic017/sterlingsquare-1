@@ -1,0 +1,144 @@
+<div class="company_info">
+    {% comment %}
+    <div class="row">
+        <div class="col-sm-12 comment more">
+            <label class="label-text addReadMore showlesscontent">
+                {{stock_gen_info.company_info}}
+            </label>
+        </div>
+    </div>
+    {% endcomment %}
+    <div class="row">
+        <!-- ROW 0: Description -->
+        <div id="description_text" class="col-sm-12 label-text mb-5">
+            {{profile.description}}
+        </div>
+        <!--ROW 1-->
+        <div class="col-sm-3 col-6 margin-spacing">
+            <div class="label-text-bold">
+                CEO
+            </div>
+            <div id="ceo_text" class="label-text">
+                {{profile.ceo}}
+            </div>
+        </div>
+        <div class="col-sm-3 col-6 margin-spacing">
+            <div class="label-text-bold">
+                Employees
+            </div>
+            <div id="employees_text" class="label-text">
+                {{profile.employees}}
+            </div>
+        </div>
+        <div class="col-sm-3 col-6 margin-spacing">
+            <div class="label-text-bold">
+                Headquarters
+            </div>
+            <div id="hq_text" class="label-text">
+                {{profile.hq}}
+            </div>
+        </div>
+        <div class="col-sm-3 col-6 margin-spacing">
+            <div class="label-text-bold">
+                Founded
+            </div>
+            <div id="founded_text" class="label-text">
+                {{profile.founded}}
+            </div>
+        </div>
+
+        <div class="col-sm-12 mt-3"></div>
+        <!--ROW 2-->
+        <div class="col-sm-3 col-6 margin-spacing">
+            <div class="label-text-bold">
+                Market Cap
+            </div>
+            <div id="mkt_cap_text" class="label-text">
+                {{profile.market_cap}}
+            </div>
+        </div>
+        <div class="col-sm-3 col-6 margin-spacing">
+            <div class="label-text-bold">
+                Price-Earnings Ratio
+            </div>
+            <div id="per_text" class="label-text">
+                {{profile.price_earning_ratio}}
+            </div>
+        </div>
+        <div class="col-sm-3 col-6 margin-spacing">
+            <div class="label-text-bold">
+                Dividend Yield
+            </div>
+            <div id="div_yield_text" class="label-text">
+                {{profile.dividend_yield}}
+            </div>
+        </div>
+        <div class="col-sm-3 col-6 margin-spacing">
+            <div class="label-text-bold">
+                Average Volume
+            </div>
+            <div id="avg_vol_text" class="label-text">
+                {{profile.average_volume}}
+            </div>
+        </div>
+    </div>
+    <!-- <br>
+    <br> -->
+    {% comment %}
+    {% if stock_gen_info %}
+    <div class="row read-more" style="display:none">
+        {% for officer in stock_gen_info.officers.officer_info %}
+        <div class="col-sm-4 label-text">
+            <div>{{officer.title}}</div>
+            <div>{{officer.name}}</div>
+        </div>
+        {% if forloop.counter|divisibleby:3 %}<br><br><br><br>{% endif %}
+        {% endfor %}
+        <div class="col-sm-4 label-text">
+
+            <div>Headquarters</div>
+            <div>{{stock_gen_info.headquaters}}</div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="row">
+        <div class="col-sm-4 label-text">
+            <div>Employees</div>
+            <div>{{stock_gen_info.employees|default_if_none:'-'}}</div>
+        </div>
+
+        <!--    <div class="show-staff-details" style="display:none">-->
+        <!--            <div class="col-sm-3 label-text" style="display:none">-->
+        <!--                <div>Founded</div>-->
+        <!--                <div>{{company_info.founded}}</div>-->
+        <!--            </div>-->
+        <div class="col-sm-4 label-text">
+            <div>Market Cap</div>
+            <div>{{stock_gen_info.market_cap|default_if_none:'-'}}</div>
+        </div>
+        <div class="col-sm-4 label-text" >
+            <div>Price-Earnings Ratio</div>
+            <div>{{stock_gen_info.pe_ratio|default_if_none:'-'}}</div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="row">
+        <div class="col-sm-4 label-text " >
+            <div>High Today</div>
+            <div>{{stock_gen_info.high_today|default_if_none:'-'}}</div>
+        </div>
+        <div class="col-sm-4 label-text" >
+            <div>Low Today</div>
+            <div>{{stock_gen_info.low_today|default_if_none:'-'}}</div>
+        </div>
+        <div class="col-sm-4 label-text">
+            <div>Open Price</div>
+            <div>{{stock_gen_info.open_price|default_if_none:'-'}}</div>
+        </div>
+    </div>
+    <!--        </div>-->
+    {% endif %}
+    {% endcomment %}
+</div>

@@ -1,0 +1,54 @@
+{% extends 'base_dashboard.html' %}
+{% load static %}
+{% block content %}
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<div class="container no-fluid">
+    <div class="row sm-gutters">
+        <!-- <div class="col-sm-1"></div> -->
+        <div class="col-md-8 padding-right-30">
+            <div class="main-chart mb15">
+                <!-- TradingView Widget BEGIN -->
+                <div class="tradingview-widget-container">
+                    <div id="tradingview_e8053" class="">
+                        <input type="hidden" class="has_position" value="{{has_position}}">
+                        <input type="hidden" class="theme-color" value="">
+                        {% include 'includes/dashboard_includes/line-chart-main-dashboard.html' %}
+                    </div>
+                </div>
+                <!-- TradingView Widget END -->
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 label-text-bold">Buying Power</div>
+                <div class="col-md-6 label-text text-right" id="buying_power">-</div>
+            </div>
+            <hr style="background-color: #fff">
+            {% include 'includes/dashboard_includes/position-table-details.html' %}
+            {#{% include 'includes/dashboard_includes/upcoming_activity.html' %}#}
+            <br>
+            {# <hr style="background-color: #fff"> #}
+
+            {% comment %}
+            {% include 'includes/dashboard_includes/company_info.html' %}
+            {% endcomment %}
+
+            {% comment %}
+            {% include 'includes/dashboard_includes/scatter-plot-chart-main.html' %}
+            {% endcomment %}
+            <br>
+            <br>
+            <br>
+            {% include 'includes/dashboard_includes/most_active.html' %}
+        </div>
+        <div class="col-md-4 padding-left-30">
+            <div class="fixed-sidebar">
+                {% include 'includes/dashboard_includes/watchlist_and_shares.html' %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

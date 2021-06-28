@@ -1,0 +1,106 @@
+<div class="market-pairs mt-3">
+    <div class="row">
+        <div class="col-sm-9 dash-right-col-title-div">
+            <p class="dash-right-col-title1">Stocks</p>
+        </div>
+        <div class="col-sm-3 dash-right-col-title-arrow-div">
+            <i class="fa fa-chevron-down dash-right-col-title-arrow-2"></i>
+            <div class="dropdown-menu dash-right-col-dropdown-2">
+                <div class="dropdown-header d-flex flex-column align-items-center">
+                    <p>Display</p>
+                </div>
+                <div class="dropdown-body">
+                    <ul class="profile-nav">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+
+                                <span>Last Price</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+
+                                <span>Your Equity</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+
+                                <span>Today's Return</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link red">
+
+                                <span>Total Return</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <hr style="background: #2a2e39;">
+    <div class="row">
+        <div class="stock-detail-col" id="stock_list">
+
+        </div>
+    </div>
+    <hr style="background: #2a2e39;">
+    <div class="row">
+        <div class="col-sm-9 dash-right-col-title-div">
+            <p class="dash-right-col-title1">Watchlist</p>
+        </div>
+        <!--            <div class="col-sm-8" style="padding: 10px 0px 0px 30px;">-->
+        <!--              <label style="color: #ffffff">Shares</label>-->
+        <!--            </div>-->
+        <!--            <div class="col-sm-4" style="padding: 0px 30px 0px 0px;">-->
+        <!--              <input type="text" class="form-control share-num">-->
+        <!--            </div>-->
+    </div>
+    <hr style="background: #2a2e39;">
+
+    <div class="row">
+        <div class="stock-detail-col" id="watch_list">
+
+        </div>
+    </div>
+
+    {% comment %}
+    <div id="watch_list">
+        <div class="row mb-3">
+            <div class="stock-detail">
+                <div class="col-md-5 col-sm-4 padding-right-7">
+                    <div class="stock-name">
+                        <p>SWN</p>
+                        <p class="num-of-shares">1.23 Shares</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-4 padding-0">
+                    <div class="stock-graph"></div>
+                </div>
+                <div class="col-md-4 col-sm-4 padding-left-7">
+                    <div class="stock-price">
+                        <p>US$4.20</p>
+                        <p class="trade-gain-loss">-2.78%</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endcomment %}
+    <ul class="nav nav-pills" role="tablist">
+
+    </ul>
+
+    <script>
+              $(document).on("click", ".s-result", function () {
+                symbol = $(this).html()
+                symbol = symbol.trim()
+                console.log(symbol);
+                 window.open('/accounts/dashboard/stocks/NSE:'+`${symbol}/`);
+                });
+
+                </script>
+</div>

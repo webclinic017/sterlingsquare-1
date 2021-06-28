@@ -1,0 +1,148 @@
+<div class="market-pairs">
+    <input type="hidden" class="inp-stock-num">
+    <div class="row">
+        <div class="col-sm-9 dash-right-col-title-div" style="display:-webkit-inline-box">
+            <div class="dash-right-col-title1 open-buy-content">BUY <span class="stock-symbol-span">{{symbol}}</span></div>
+            {% if has_pos %}
+                <div class="dash-right-col-title1 open-sell-content">SELL <span class="stock-symbol-span">{{symbol}}</span></div>
+            {% endif %}
+        </div>
+        <div class="col-sm-3 dash-right-col-title-arrow-div">
+            <i class="fa fa-chevron-down dash-right-col-title-arrow"></i>
+            <div class="dropdown-menu dash-right-col-dropdown">
+                <div class="dropdown-header d-flex flex-column align-items-center">
+                    <p>Order Type</p>
+                </div>
+                <input type="hidden" class="order_type" value="market_order">
+                <div class="dropdown-body">
+                    <ul class="profile-nav">
+                        <li class="nav-item">
+                            <a data-attr="market_order" href="#" class="nav-link order-select">
+
+                                <span>Market Order</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a data-attr="limit_order" href="#" class="nav-link order-select">
+
+                                <span>Limit Order</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a data-attr="s_loss_order" href="#" class="nav-link order-select">
+
+                                <span>Stop Loss Order</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a data-attr="s_limit_order" href="#" class="nav-link red order-select">
+
+                                <span>Stop Limit Order</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a data-attr="ts_order" href="#" class="nav-link red order-select">
+
+                                <span>Trailing Stop Order</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-sm-5" style="padding: 10px 0px 0px 30px;">
+            <label style="color: #ffffff">Shares</label>
+        </div>
+        <div class="col-sm-7" style="padding: 0px 30px 0px 0px;">
+            <input type="text" class="form-control share-num">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6" style="padding: 10px 0px 0px 30px;">
+            <label style="color: #fff">Market Price</label>
+        </div>
+        <div class="col-sm-6 market-price">
+            <input type="hidden" class="market-price-val" value="{{stockprice}}">
+            <label class="label-rupee" style="font-size: 12px;">&#8377;</label>
+            <label id="market-price-ws">
+                {% if stockprice %}{{stockprice}}{% else %}0.00{% endif %}
+            </label>
+        </div>
+    </div>
+    <div class="row limit-price-content  buy-stock-content" style="display: none">
+        <div class="col-sm-5" style="padding: 10px 0px 0px 30px;">
+            <label style="color: #fff">Limit Price</label>
+        </div>
+        <div class="col-sm-7" style="padding: 0px 30px 10px 0px;">
+            <input type="text" class="form-control inp-limit-price">
+        </div>
+        <br>
+        <div class="col-sm-5" style="padding: 10px 0px 0px 30px;">
+            <label style="color: #fff">Expires</label>
+        </div>
+        <div class="col-sm-7" style="padding: 0px 30px 0px 0px;">
+            <select class="form-control inp-expires" style="font-size: 12px">
+                <option value="1">Good for day</option>
+                <option value="2">Good till canceled</option>
+            </select>
+        </div>
+    </div>
+    <hr style="background-color: #fff">
+    <p class="err-label"></p>
+    <div class="row">
+        <div class="col-sm-6" style="padding: 10px 0px 0px 30px;">
+            <label style="color: #fff">Estimated Cost</label>
+        </div>
+        <div class="col-sm-6 market-price">
+            <label>
+                <label class="label-rupee" style="font-size: 12px;">&#8377;</label>
+                <span  class="total-market-price">
+                    0.00
+                </span>
+            </label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 info-message-content">
+    <p class="info-message"></p>
+        </div>
+    </div>
+    <div class="row review-order-content  buy-stock-content">
+        <div class="col-sm-12" style="text-align: center">
+            <button class="btn btn-success btn-change-color btn-review-order" style="width:90%">Review Order</button>
+        </div>
+    </div>
+    <div class="row buy-order-content buy-stock-content" style="display: none">
+        <div class="col-sm-12" style="text-align: center">
+            <button class="btn btn-success btn-change-color btn-buy-order" style="width:90%">BUY</button>
+        </div>
+
+    </div>
+    <div class="row sell-order-content" style="display: none">
+        <div class="col-sm-12" style="text-align: center">
+            <button class="btn btn-success btn-change-color btn-sell-order" style="width:90%">SELL</button>
+        </div>
+
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-sm-12" style="text-align: center">
+            {% if added_to_watchlist %}
+            <button class="btn btn-outline-success btn-add-to-w btn-change-color" style="width:90%">Remove from Watchlist
+            </button>
+            {% else %}
+            <button class="btn btn-outline-success btn-add-to-w btn-change-color" style="width:90%">Add to Watchlist
+            </button>
+            {% endif %}
+        </div>
+        <div class="col-sm-12" style="text-align: center">
+            <label class="label-text stock-added-success" style="display:none">Stock added to watchlist</label>
+        </div>
+    </div>
+    <ul class="nav nav-pills" role="tablist">
+
+    </ul>
+</div>

@@ -1,0 +1,60 @@
+version: '3'
+
+services:
+    app:
+      build:
+        context: .
+      command: >
+        sh -c "python manage.py wait_for_db &&
+               python manage.py makemigrations &&
+               python manage.py migrate &&
+               python manage.py runserver 0.0.0.0:8000"
+      volumes:
+        - .:/code
+      ports:
+        - "8000:8000"
+      environment:
+        - DB_HOST=db
+        - DB_NAME=mydata
+        - DB_USER=postgres
+        - DB_PASS=postgres
+      depends_on:
+        - db
+
+    db:
+      image: postgres:10-alpine
+      volumes:
+        - ./data/db:/var/lib/postgresql/data
+      environment:
+        - DB_NAME=mydata
+        - DB_USER=postgres
+        - DB_PASS=postgres
+
+    selenium:
+      image: selenium/standalone-chrome
+      ports:
+      - 4444:4444
+
+    redis:
+        image: redis:latest
+        ports:
+            - 6379:6379
+        volumes:
+            - ./config/redis.conf:/redis.conf
+        command: [ "redis-server", "/redis.conf" ]
+
+    celery:
+      build: .
+      command: celery -A sterling_square worker -l info
+      volumes:
+        - .:/code
+      depends_on:
+        - redis
+
+    celery-beat:
+        build: .
+        command: celery -A sterling_square beat -l info
+        volumes:
+          - .:/code
+        depends_on:
+          - redis

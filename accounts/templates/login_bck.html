@@ -1,0 +1,72 @@
+{% load static %}
+<!doctype html>
+<html class="no-js" lang="en">
+	<head>
+		<!-- Required meta tags -->
+		<meta charset="utf-8">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no">
+		<meta name="format-detection" content="telephone=no">
+		<title>Sterling Square :: Login</title>
+		<!-- <link rel="icon" type="image/x-icon" href="img/favicon.ico"/> -->
+		<!-- Bootstrap CSS -->
+		<link href="https://fonts.googleapis.com/css2?family=Teko:wght@400;500;600&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="{% static '/authenticate/login/css/bootstrap.min.css' %}">
+		<link rel="stylesheet" href="{% static '/authenticate/login/css/login_main.css' %}">
+	</head>
+	<body>
+		<!--[if lt IE 8]>
+		<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+		<![endif]-->
+		<div class="login-cover-outer">
+			<div class="container">
+				<div class="login-cover d-flex">
+					<div class="login-texture"><img src="{% static '/authenticate/login/images/login-texture.png' %}" alt=""></div>
+					<div class="login-sec-left">
+						<div class="login-left-content d-flex">
+							<div>
+								<h2>Sterling Square</h2>
+								<p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a</p>
+							</div>
+						</div>
+					</div>
+					<div class="login-form-section d-flex">
+						<div class="login-form-cover">
+							<h2>LOGIN</h2>
+							<p style="color: red;display: none" class="login-err-msg">Invalid credentials</p>
+
+							<div class="login-form-block">
+								<form class="login-form" action="">
+									<div class="input-group">
+										<div class="input-group-prepend">
+											<span class="input-group-text" id="basic-addon1"><img src="{% static '/authenticate/login/images/log-user.png' %}" alt=""></span>
+										</div>
+										<input type="text" class="form-control" name="username" placeholder="Email" aria-label="Email/Phone number" aria-describedby="basic-addon1" required="">
+									</div>
+									<div class="input-group">
+										<div class="input-group-prepend">
+											<span class="input-group-text" id="basic-addon2"><img src="{% static '/authenticate/login/images/log-lock.png' %}" alt=""></span>
+										</div>
+										<input type="password" class="form-control" name="password" placeholder="Password" aria-label="Password" aria-describedby="basic-addon2" required="">
+									</div>
+									<div class="login-btn-wrapper">
+										<button class="login-btn btn-login" type="submit">LOGIN</button>
+									</div>
+								</form>
+								<p><a href="#">Forgot Password?</a></p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="{% static '/authenticate/login/js/login/vendor/jquery-3.5.1.min.js' %}"></script>
+		<script src="{% static '/authenticate/login/js/login/vendor/popper.min.js' %}"></script>
+		<script src="{% static '/authenticate/login/js/login/main.js' %}"></script>
+	<script>
+	{% include 'login-scripts.html' %}
+</script>
+	</body>
+</html>

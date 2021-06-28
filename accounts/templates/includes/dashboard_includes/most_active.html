@@ -1,0 +1,62 @@
+{% load static %}
+<div class="top-g-con mt-4" id="top_gainers" style="display: none;">
+    <h4 class="graph-title">Most Active</h4>
+    <hr style="background-color: #fff">
+    <div class="container text-center my-3">
+        <div class="row mx-auto my-auto">
+            <div id="recipeCarousel" class="carousel slide w-100"
+                 data-ride="carousel">
+                <div id="carousel-item-wrapper" class="carousel-inner w-100" role="listbox">
+                    {% comment %}
+                    {% for top_stock in top_gainers %}
+                    <div class="carousel-item">
+                        <div class="col-md-3 col-sm-2 top-stocks">
+                            <div class="markets-capital-item">
+                                <h6>
+
+                                        <span>
+                                            <p class="s-result name_id">
+                                                {{top_stock.symbol}}
+                                            </p>
+                                        </span>
+                                </h6>
+                                <div class="markets-capital-details">
+                                    <h6 class="s-ltp">
+                                        ₹{{top_stock.ltp}}</h6>
+                                    <h5 class="green">
+                                        {{top_stock.netPrice}}% <i
+                                            class="icon ion-md-arrow-up"></i>
+                                    </h5>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% endcomment %}
+                </div>
+                <a class="carousel-control-prev w-auto"
+                   href="#recipeCarousel" role="button"
+                   data-slide="prev">
+                    <span class="carousel-control-prev-icon bg-dark border border-dark rounded-circle"
+                          aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next w-auto"
+                   href="#recipeCarousel" role="button"
+                   data-slide="next">
+                    <span class="carousel-control-next-icon bg-dark border border-dark rounded-circle"
+                          aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="{% static 'js/viewmodels/dashboard.js' %}"></script>
+<script>
+    vm = new Dashboard();
+    vm.init();
+</script>

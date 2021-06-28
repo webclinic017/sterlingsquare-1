@@ -1,0 +1,133 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Sterling Square :: Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="{% static 'authenticate/login/images/icons/favicon.ico' %}"/>
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'authenticate/login/vendor/bootstrap/css/bootstrap.min.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'authenticate/login/fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'authenticate/login/fonts/Linearicons-Free-v1.0.0/icon-font.min.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'authenticate/login/vendor/animate/animate.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'authenticate/login/vendor/css-hamburgers/hamburgers.min.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'authenticate/login/vendor/animsition/css/animsition.min.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'authenticate/login/vendor/select2/select2.min.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'authenticate/login/vendor/daterangepicker/daterangepicker.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'authenticate/login/css/util.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'authenticate/login/css/main.css' %}">
+    <!--===============================================================================================-->
+</head>
+<body style="background-color: #666666;">
+
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100">
+            <form class="login100-form login-form validate-form">
+                {% csrf_token %}
+                <input type="hidden" class="view-state" value="1">
+
+                <div class="show-section1" style="">
+						<span class="login100-form-title p-b-43">
+						LOGIN
+					</span>
+                    <p style="color: red;display: none" class="login-err-msg">Invalid credentials</p>
+                    <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
+                        <input class="input100 form-inp" type="text" name="username">
+                        <span class="focus-input100"></span>
+                        <span class="label-input100">Email</span>
+                    </div>
+                    <div class="wrap-input100 validate-input" data-validate="Password is required">
+                        <input class="input100 form-inp" type="password" name="password">
+                        <span class="focus-input100"></span>
+                        <span class="label-input100">Password</span>
+                    </div>
+                </div>
+                <div class="container-login100-form-btn">
+                    <button class="login100-form-btn btn-login">
+                        login
+                    </button>
+                </div>
+
+                <!--<div class="text-center p-t-46 p-b-20">-->
+                <!--<span class="txt2">-->
+                <!--or sign up using-->
+                <!--</span>-->
+                <!--</div>-->
+
+                <!--<div class="login100-form-social flex-c-m">-->
+                <!--<a href="#" class="login100-form-social-item flex-c-m bg1 m-r-5">-->
+                <!--<i class="fa fa-facebook-f" aria-hidden="true"></i>-->
+                <!--</a>-->
+
+                <!--<a href="#" class="login100-form-social-item flex-c-m bg2 m-r-5">-->
+                <!--<i class="fa fa-twitter" aria-hidden="true"></i>-->
+                <!--</a>-->
+                <!--</div>-->
+            </form>
+
+            <div class="login100-more"
+                 style="width:40%;background-image: url('{% static 'authenticate/login/images/black_theme.jpg' %}');">
+            <div class="login-cover-outer">
+			<div class="container">
+				<div class="login-cover d-flex">
+					<div class="login-texture">
+                        <img src="{% static 'authenticate/login/images/login-texture.png' %}" alt="">
+
+					<div class="login-sec-left">
+						<div class="login-left-content d-flex">
+							<div>
+								<h2>Sterling Square</h2>
+<!--								<p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a</p>-->
+							</div>
+						</div>
+					</div>
+                    </div>
+				</div>
+			</div>
+		</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--===============================================================================================-->
+<script src="{% static 'authenticate/login/vendor/jquery/jquery-3.2.1.min.js' %}"></script>
+<!--===============================================================================================-->
+<script src="{% static 'authenticate/login/vendor/animsition/js/animsition.min.js' %}"></script>
+<!--===============================================================================================-->
+<script src="{% static 'authenticate/login/vendor/bootstrap/js/popper.js' %}"></script>
+<script src="{% static 'authenticate/login/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+<!--===============================================================================================-->
+<script src="{% static 'authenticate/login/vendor/select2/select2.min.js' %}"></script>
+<!--===============================================================================================-->
+<script src="{% static 'authenticate/login/vendor/daterangepicker/moment.min.js' %}"></script>
+<script src="{% static 'authenticate/login/vendor/daterangepicker/daterangepicker.js' %}"></script>
+<!--===============================================================================================-->
+<script src="{% static 'authenticate/login/vendor/countdowntime/countdowntime.js' %}"></script>
+<!--===============================================================================================-->
+<script src="{% static 'authenticate/login/js/main.js' %}"></script>
+
+<!-- signup jquery file -->
+<script>
+    {%include 'login-scripts.html' %}
+</script>
+</body>
+</html>

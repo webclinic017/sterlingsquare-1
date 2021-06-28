@@ -1,0 +1,60 @@
+// Brand colors
+//––––––––––––––––––––––––––––––––––––––––––––––––––
+$blue:       #4078c0 !default;
+$gray-light: #ddd    !default;
+$gray:       #767676 !default;
+$gray-dark:  #333    !default;
+
+$title-black: #0c1725;
+$text-blue: #223751;
+
+// Line height
+$base-line-height: 1.4;
+$heading-line-height: 1.2;
+
+// Other Sizes
+$base-border-radius: 3px;
+$base-spacing: $base-line-height * 1em;
+$small-spacing: $base-spacing / 2;
+$base-z-index: 0;
+
+// Border
+$base-border-color: $gray-light;
+$base-border: 1px solid $base-border-color;
+
+
+// Font stack
+//––––––––––––––––––––––––––––––––––––––––––––––––––
+$body-font: Arial,Helvetica,sans-serif !default;
+$poppins: 'Poppins', sans-serif, !default;
+$teko-font: 'Teko', sans-serif;
+
+// The base body size
+//––––––––––––––––––––––––––––––––––––––––––––––––––
+$body-font-size: 14px !default;
+
+
+// Breakpoints
+//––––––––––––––––––––––––––––––––––––––––––––––––––
+
+$lg-320    	: "min-width: 320px";
+$lg-480   	: "min-width: 480px";
+$lg-768    	: "min-width: 768px";
+$lg-992   	: "min-width: 992px";
+$lg-1024   	: "min-width: 1024px";
+$lg-1200 	: "min-width: 1200px";
+
+$sm-479   	: "max-width: 479px";  /*** all Mobile Screen (iphone 6,7,8) ***/
+$sm-767     : "max-width: 767px";  /*** mobile Landscape Size ***/
+$sm-991     : "max-width: 991px";  /*** medium devices (tablets, less than 992px) ***/
+$sm-1023   	: "max-width: 1023px"; /*** iPad in landscape ***/
+$sm-1199 	: "max-width: 1199px"; /**** smaller than desktop 1200 (devices and browsers) ***/
+$sm-1281 	: "max-width: 1281px"; /*** laptop with MDPI (medium density per inch) resolution ***/
+$sm-1367 	: "max-width: 1367px"; /*** SP developers resolution ***/
+$sm-1441 	: "max-width: 1441px"; /*** laptop with HiDPI (High Dots Per Inch) resolution ***/
+$sm-1679 	: "max-width: 1679px"; /*** WSXGA (Wide Super Extended Graphics Array) resolution ***/
+
+
+
+
+

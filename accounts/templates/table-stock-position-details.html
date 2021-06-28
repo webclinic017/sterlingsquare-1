@@ -1,0 +1,129 @@
+{% extends 'base_dashboard.html' %}
+{% load static %}
+{% load dashboard_tags %}
+{% block content %}
+<style>
+    .table td, th {
+        text-align: center;
+        color: white !important;
+    }
+    th {
+        border-style: solid;
+        border-color: red;
+        border-width: 1px;
+    }
+    th.sorting_asc:after {
+        content: "\f0d8";
+        font-family: fontAwesome;
+        margin-left: 5px;
+    }
+    th.sorting_desc:after {
+        content: "\f0d7";
+        font-family: fontAwesome;
+        margin-left: 5px;
+    }
+    .header-label{
+        color: #fff;
+        font-weight: 600;
+    }
+    #transactions_filter {
+        display: none;
+    }
+
+    .st-sort-ascent:before{
+        content: '\25B2';
+    }
+
+    .st-sort-descent:before{
+        content: '\25BC';
+    }
+</style>
+
+<div class="container data-table-stock-position">
+    <h3 class="header-label">Transactions</h3>
+    {% comment %}
+    <table class="table" >
+        <tr>
+            <th>Date</th>
+    <!--        <th>Account Number</th>-->
+            <th>Type</th>
+            <th>Asset Name</th>
+            <th>Symbol</th>
+            <th>Units</th>
+            <th>Price</th>
+            <th>Current Price</th>
+            <th>Unrealised Gain/Loss</th>
+            <th>Amount</th>
+        </tr>
+            {% for stock in position_list %}
+        {% if stock.transaction_details.size != '0' %}
+                <input type="hidden" value="{{stock.stockticker.symbol}}" class="is_transaction">
+                <tr>
+                    <td>{{ stock.transaction_details.time|default_if_none:'' }}</td>
+    <!--                <td>{{ stock.accountno }}</td>-->
+                    <td>{{ stock.ordertype|default_if_none:'' }}</td>
+                    {% get_stock_name stock.ticker as stockname %}
+                    <td>{{ stockname|default_if_none:'' }}</td>
+                    <td>{{ stock.ticker|default_if_none:'' }}</td>
+                    <td>{{ stock.size|default_if_none:'' }}</td>
+                    <td>{{ stock.transaction_details.price|default_if_none:'' }}</td>
+                    {% format_currency stock.price as stock_price %}
+                    {% get_amount stock_price stock.size as amount %}
+                    {% check_pos_or_neg stock as unrealised_gainloss %}
+
+                    <td>{{ stock_price }}</td>
+                    <td>{{ unrealised_gainloss|default_if_none:'' }}</td>
+                    <td>{{ amount|default_if_none:'' }}</td>
+
+                </tr>
+        {% endif %}
+        {% empty %}
+        <tr>
+            <td colspan="10">
+                No transaction data available
+            </td>
+        </tr>
+            {% endfor %}
+        </table>
+    {% endcomment %}
+
+    <table class="table" id="transactions"></table>
+</div>
+
+<!--<div class="pagination" style="display: block">-->
+<!--        {% if position_list.has_previous %}-->
+<!--     <span style="float: left" class="btn btn-paginate" data-attr="1"><< </span>-->
+<!--    <span style="float: left" class="btn btn-paginate" data-attr="{{ position_list.previous_page_number }}"><</span>-->
+
+<!--        {% endif %}-->
+
+<!--        <span class="current" style="color: #fff;text-align: center;display: none">-->
+<!--            Page {{ position_list.number }} of {{ position_list.paginator.num_pages }}.-->
+<!--        </span>-->
+
+<!--        {% if position_list.has_next %}-->
+<!--            <span style="float: right" class="btn btn-paginate" data-attr="{{ position_list.paginator.num_pages }}">>></span>-->
+<!--            <span style="float: right" class="btn btn-paginate" data-attr="{{ position_list.next_page_number }}">></span>-->
+
+<!--        {% endif %}-->
+<!--</div>-->
+
+<!--<script>-->
+<!--$(document).ready(function () {-->
+<!--  $('#dtBasicExample').DataTable();-->
+<!--  $('.dataTables_length').addClass('bs-select');-->
+<!--  // if($(".ua-content").find(".is_transaction").length){-->
+<!--  //   $(".ua-content").show()-->
+<!--  // }-->
+<!--});-->
+
+<!--</script>-->
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/viewmodels/position_table.js' %}"></script>
+<script>
+    viewModel = new PositionTableViewModel();
+    viewModel.init();
+</script>
+{% endblock %}

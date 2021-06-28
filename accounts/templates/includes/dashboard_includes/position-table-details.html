@@ -1,0 +1,136 @@
+<style>
+    .markets-capital-item {
+        padding-top: 10px;
+        padding-left: 15px;
+        padding-right: 15px;
+        text-align: inherit;
+        font-size: 12px;
+        height: 200px !important;
+    }
+
+    .pos-table-price-span {
+        font-size: 20px;
+        font-weight: 600;
+    }
+</style>
+<div class="pos-tabl-details-content" style="display: none">
+    <div class="col-md-3 col-sm-2 top-stocks" style="max-width: 35%;width:100%">
+        <div class="markets-capital-item">
+            <div class="row">
+                <div class="col-sm-12">
+                    <span>Your Market Value</span>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-12">
+                    <span class="pos-table-price-span stock_price">${{stockprice}}</span>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-6">
+                    <span>Cost</span>
+                </div>
+
+                <div class="col-sm-6" style="text-align: right">
+                    <span>${{average_cost}}</span>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-6">
+                    <span>Today's Return</span>
+                </div>
+                <div class="col-sm-6" style="text-align: right">
+                    <span class="price-change"></span> (<span class="price-change-percentage"></span>%)
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <span>Total Return</span>
+                </div>
+                <div class="col-sm-6" style="text-align: right">
+                    <span class="">{{ total_return }} ({{total_return_percentage}}%)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-2 top-stocks" style="max-width: 35%;width:100%">
+        <div class="markets-capital-item">
+            <div class="row">
+                <div class="col-sm-12">
+                    <span>Your Average Cost</span>
+                </div>
+            </div>
+            <br>
+           <div class="row">
+                <div class="col-sm-12">
+                    <span class="pos-table-price-span">${{average_cost}}</span>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-6">
+                    <span>Shares</span>
+                </div>
+
+                <div class="col-sm-6" style="text-align: right">
+                    <span>{{share_num}}</span>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-6">
+                    <span>Portfolio</span>
+                </div>
+                <div class="col-sm-6" style="text-align: right">
+                    <span>-----</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <span></span>
+                </div>
+                <div class="col-sm-6" style="text-align: right">
+                    <span class=""></span>
+                </div>
+            </div>
+            <br>
+        </div>
+    </div>
+<!--    <div class="col-md-3 col-sm-2 top-stocks" style="max-width: 32%;width:100%">-->
+<!--        <div class="markets-capital-item">-->
+<!--            <div class="row">-->
+<!--                <div class="col-sm-12">-->
+<!--                    <span>Your Average Cost</span>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <br>-->
+<!--            <div class="row">-->
+<!--                <div class="col-sm-12">-->
+<!--                    <span class="pos-table-price-span">${{average_cost}}</span>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <br>-->
+<!--            <div class="row">-->
+<!--                <div class="col-sm-6">-->
+<!--                    <span>Shares</span>-->
+<!--                </div>-->
+
+<!--                <div class="col-sm-6" style="text-align: right">-->
+<!--                    <span>{{share_num}}</span>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <br>-->
+<!--            <div class="row">-->
+<!--                <div class="col-sm-6">-->
+<!--                    <span>Portfolio</span>-->
+<!--                </div>-->
+<!--                <div class="col-sm-6" style="text-align: right">-->
+<!--                    <span>-&#45;&#45;&#45;&#45;</span>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+</div>

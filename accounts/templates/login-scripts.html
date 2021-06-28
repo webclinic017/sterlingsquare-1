@@ -1,0 +1,25 @@
+$(document).on("click",".btn-login",function(e){
+
+    e.preventDefault();
+    var data = new FormData($('.login-form').get(0))
+    data.append('csrfmiddlewaretoken',"{{csrf_token}}")
+    $.ajax({
+        type: "POST",
+        data: data,
+        processData: false,
+        contentType: false,
+        success: function(result){
+            if (result.status){
+                $(".login-err-msg").hide()
+                alert("Login Success")
+                location.href = "/";
+            }else{
+                $(".login-err-msg").show()
+            }
+        },
+        error: function(xhr, status, error){
+            alert("Something went wrong! Please reload your page");
+        }
+    })
+
+})

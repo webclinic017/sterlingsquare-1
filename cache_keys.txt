@@ -1,0 +1,32 @@
++------------------+
+ CACHE KEY GLOSSARY
++------------------+
+
+1. {symbol}_profile - Stores the reference to profile of the Symbol
+2. {symbol}_profile_updated - Stores the expiry timestamp of the Cache Key "{symbol}_profile"
+
+3. positions_{request.user.id} - Stores the Positions of the particular User.
+4. positions_exp_{request.user.id} - Stores the expiry timestamp of the Cache Key "positions_{request.user.id}".
+    Usually after 10 seconds.
+
+5. watchlist_{request.user.id} - Stores the Watchlist symbols of the user.
+6. watchlist_exp_{request.user.id}  - Stores the expiry timestamp of the Cache Key "watchlist_{request.user.id}".
+    Usually after 10 seconds.
+
+7. most_active - Stores the most active list - common for all the users.
+8. most_active_expiry - Stores the expiry timestamp of the Cache Key "most_active". Usually after 6 hours.
+8. most_active_calculation_running - Whether the Celery task that calculates the most active is currently
+    running or not.
+
+9. {symbol}_historical_{interval} - Stores the historical data in cache for that particular symbol
+    and interval in cache.
+10. {symbol}_historical_{interval}_expiry - Stores the expiry timestamp of the Cache Key "{symbol}_historical_{interval}".
+    Usually the next day.
+
+11. {request.user.id}_historical_{interval} - Stores the historical PORTFOLIO data in cache for that particular symbol
+    and interval in cache. {"res": [], "res2": [], "max": 123, "min": 124}
+12. {request.user.id}_historical_{interval}_expiry - Stores the expiry timestamp of the Cache Key "{request.user.id}_historical_{interval}".
+    Usually the next day.
+
+13: {symbol}_prev_price - Previous day close price of the symbol.
+14: {symbol}_prev_price_expiry - Generally the next day.

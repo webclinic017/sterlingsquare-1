@@ -28,6 +28,8 @@ RUN apt-get -y install build-essential libssl-dev libffi-dev \
 #     libxslt libxslt-dev \
 #     libjpeg-turbo-dev zlib-dev
 
+RUN apt install python3-pip
+
 RUN pip install --upgrade pip
 
 RUN pip3 install setuptools_rust

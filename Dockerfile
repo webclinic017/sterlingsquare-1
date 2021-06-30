@@ -38,6 +38,6 @@ RUN pip3 install cryptography
 
 
 
-RUN pip install -r req_ubuntu.txt
+RUN pip3 install -r req_ubuntu.txt
 
 COPY . /code/

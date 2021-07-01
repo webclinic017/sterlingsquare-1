@@ -453,7 +453,7 @@ class Singleton2:
                 print("ticker ... connected .... ")
 
             self.ticker = websocket.WebSocketApp(
-                "wss://ws.kite.trade?api_key={}&access_token={}".format(
+                "ws://ws.kite.trade?api_key={}&access_token={}".format(
                     self.api_key, self.access_token
                 ),
                 on_message=on_message,
@@ -686,7 +686,7 @@ class SingletonCelery:
                 ws.send(json.dumps({"a": "subscribe", "v": self.token}))
 
             self.ticker = websocket.WebSocketApp(
-                "wss://ws.kite.trade?api_key={}&access_token={}".format(
+                "ws://ws.kite.trade?api_key={}&access_token={}".format(
                     self.api_key, self.access_token
                 ),
                 on_message=on_message,

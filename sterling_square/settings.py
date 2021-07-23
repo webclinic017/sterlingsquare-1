@@ -1,3 +1,4 @@
+
 """
 Django settings for sterling_square project.
 
@@ -144,31 +145,31 @@ CHANNEL_LAYERS = {
     },
 }
 
-# Database
-# https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-# DB settings
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': env('DB_NAME'),
-#         'USER': env('DB_USER'),
-#         'PASSWORD': env('DB_PASS'),
-#         'HOST': env('DB_HOST'),
-#         'PORT': env('DB_PORT'),
-#         # 'OPTIONS': {
-#         #     'options': '-c statement_timeout={}'.format(60*1000),       # 60 seconds timeout
-#         # },
-#         # 'CONN_MAX_AGE': 100,
-#         'CONN_MAX_AGE': 0,
-#     }
-# }
-
+#Database
+#https://docs.djangoproject.com/en/3.0/ref/settings/#databases
+#DB settings
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASS'),
+        'HOST': env('DB_HOST'),
+        'PORT': env('DB_PORT'),
+        # 'OPTIONS': {
+        #     'options': '-c statement_timeout={}'.format(60*1000),       # 60 seconds timeout
+        # },
+        # 'CONN_MAX_AGE': 100,
+        'CONN_MAX_AGE': 0,
     }
 }
+
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#    }
+#}
 #
 # DATABASES = {
 #     'default': {
@@ -203,6 +204,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# celery
+CELERY_IMPORTS = ('main.tasks', 'accounts.tasks')
+
 # INTERNAL_IPS = [
 #     # ...
 #     '127.0.0.1',
@@ -224,6 +228,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
+
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
@@ -268,3 +274,11 @@ LOGIN_REDIRECT_URL = '/'
 #         "BACKEND": "channels.layers.InMemoryChannelLayer"
 #     }
 # }
+
+
+try:
+    from .celery_file import *
+except ImportError as e:
+    print(str(e))
+
+

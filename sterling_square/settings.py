@@ -55,20 +55,20 @@ PROXIES = [
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'm9nln))+)2%+2lg8s&!9ukehl6g+^7%ixmis#eb0@0dqsdp=84'
 
-APPLICATION_BASE_URL = env('BASE_URL')
+APPLICATION_BASE_URL = "django:8000"
 
 ZERODHA_CREDENTIALS = {
-    "api_key": env("STERLING_SQUARE_API_KEY"),
-    "api_secret": env("STERLING_SQUARE_API_SECRET"),
+    "api_key": "0yvny102khsjlnpr",
+    "api_secret": "0zp3tp2bhxzamg8ph4q2s1ys7l5paunv",
 
-    "user_id": env("STERLING_SQUARE_USER_ID"),
-    "user_pass": env("STERLING_SQUARE_PASS"),
-    "user_pin": env("STERLING_SQUARE_PIN"),
+    "user_id": "ZB8746",
+    "user_pass": "@KKR357",
+    "user_pin": "050991",
 
 }
 
-CHROME_DRIVER = env("CHROME_DRIVER")
-FINANCIAL_MODEL_GRP_API_KEY = env("FINANCIAL_MODEL_GRP_API_KEY")
+CHROME_DRIVER = "http://selenium:4444/wd/hub"
+FINANCIAL_MODEL_GRP_API_KEY = "5291a9138ba381af8ad86996c461cb2c"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -140,7 +140,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
+            "hosts": [('redis', 6379)],
         },
     },
 }
@@ -151,11 +151,11 @@ CHANNEL_LAYERS = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env('DB_NAME'),
-        'USER': env('DB_USER'),
-        'PASSWORD': env('DB_PASS'),
-        'HOST': env('DB_HOST'),
-        'PORT': env('DB_PORT'),
+        'NAME': "postgres",
+        'USER': "postgres",
+        'PASSWORD': "postgres",
+        'HOST': "pgdb",
+        # 'PORT': 5432,
         # 'OPTIONS': {
         #     'options': '-c statement_timeout={}'.format(60*1000),       # 60 seconds timeout
         # },
@@ -241,8 +241,8 @@ STATIC_ROOT = 'staticfiles'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-CELERY_BROKER_URL = 'redis://localhost:6379'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_BROKER_URL = 'redis://redis:6379'
+CELERY_RESULT_BACKEND = 'redis://redis:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'

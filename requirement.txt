@@ -25,10 +25,10 @@ newsapi-python==0.2.6
 nsepy==0.8
 nsetools==1.0.11
 numpy==1.18.5
-pandas==1.0.4
+pandas
 pandas-datareader==0.8.1
 parse==1.15.0
-psycopg2==2.7.5
+psycopg2-binary==2.7.5
 pyee==7.0.2
 pyppeteer==0.2.2
 pyquery==1.4.1

@@ -42,12 +42,12 @@ environ.Env.read_env()
 #     send_default_pii=True
 # )
 
-PROXIES = [
-    {"http": "14.140.250.24", "https": "125.99.106.250"},
-    {"https": "103.10.235.231"},
-    {"https": "14.139.242.242"},
-    {"http": "115.124.105.113"},
-]
+# PROXIES = [
+#     {"http": "14.140.250.24", "https": "125.99.106.250"},
+#     {"https": "103.10.235.231"},
+#     {"https": "14.139.242.242"},
+#     {"http": "115.124.105.113"},
+# ]
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -55,7 +55,7 @@ PROXIES = [
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'm9nln))+)2%+2lg8s&!9ukehl6g+^7%ixmis#eb0@0dqsdp=84'
 
-APPLICATION_BASE_URL = "django:8000"
+APPLICATION_BASE_URL = "http://django:8000"
 
 ZERODHA_CREDENTIALS = {
     "api_key": "0yvny102khsjlnpr",
@@ -107,8 +107,8 @@ MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
-# SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
-SESSION_ENGINE = "redis_sessions.session"
+SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
+# SESSION_ENGINE = "redis_sessions.session"
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
@@ -140,7 +140,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('redis', 6379)],
+            "hosts": [('redis://redis:6379/0')],
         },
     },
 }
@@ -241,8 +241,8 @@ STATIC_ROOT = 'staticfiles'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-CELERY_BROKER_URL = 'redis://redis:6379'
-CELERY_RESULT_BACKEND = 'redis://redis:6379'
+CELERY_BROKER_URL = 'redis://redis:6379/0'
+CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
@@ -261,7 +261,7 @@ LOGIN_REDIRECT_URL = '/'
 # CACHES = {
 #     "default": {
 #         "BACKEND": "django_redis.cache.RedisCache",
-#         "LOCATION": "redis://127.0.0.1:6379/1",
+#         "LOCATION": "redis://redis:6379/0",
 #         "OPTIONS": {
 #             "CLIENT_CLASS": "django_redis.client.DefaultClient"
 #         },

@@ -227,7 +227,10 @@ def get_company_profile(symbol):
 
 
 def get_open_price(symbol, start, end, res, key):
+    
     df = si.get_data(symbol, start_date=start, end_date=end)
+    print(df)
+    
     try:
         if df.empty:
             res[key] = 0.0

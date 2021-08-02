@@ -8,7 +8,7 @@ import datetime
 
 import dateutil
 import requests
-from celery.task import task
+from celery import task
 from celery import Celery
 # set the default Django settings module for the 'celery' program.
 from django.conf import settings
@@ -54,7 +54,7 @@ app.conf.beat_schedule = {
 
 @task(name="update_stock_scheduler")
 def stock_scheduler():
-    result = requests.get("http://localhost:8000/accounts/update-stock-data/")
+    result = requests.get("http://django:8000/accounts/update-stock-data/")
     print("sssssssssss", result)
 
 

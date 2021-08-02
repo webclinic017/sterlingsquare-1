@@ -1,23 +1,11 @@
-FROM python:3.8-alpine
+FROM python:3
 
 ENV PYTHONUNBUFFERED 1
 
-RUN mkdir /code
+WORKDIR /usr/src/app
 
-WORKDIR /code
+COPY requirements_ak.txt .
 
-COPY req_ubuntu.txt /code/
+RUN pip3 install -r requirements_ak.txt
 
-RUN apk add --no-cache --update \
-    python3 python3-dev gcc \
-    gfortran musl-dev g++ \
-    libffi-dev openssl-dev cargo \
-    libxml2 libxml2-dev \
-    libxslt libxslt-dev \
-    libjpeg-turbo-dev zlib-dev
-
-RUN pip install --upgrade pip
-
-RUN pip install -r req_ubuntu.txt
-
-COPY . /code/
+RUN pip3 install pandas-datareader --upgrade

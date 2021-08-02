@@ -1,60 +1,95 @@
-version: '3'
+version: '3.8'
 
 services:
-    app:
-      build:
-        context: .
-      command: >
-        sh -c "python manage.py wait_for_db &&
-               python manage.py makemigrations &&
-               python manage.py migrate &&
-               python manage.py runserver 0.0.0.0:8000"
-      volumes:
-        - .:/code
-      ports:
-        - "8000:8000"
-      environment:
-        - DB_HOST=db
-        - DB_NAME=mydata
-        - DB_USER=postgres
-        - DB_PASS=postgres
-      depends_on:
-        - db
+    django:
+        build: .
+        container_name: django
+        command: >
+          sh -c "python3 manage.py migrate &&
+                 python3 manage.py migrate &&
+                 python3 manage.py runserver 0.0.0.0:8000"
 
-    db:
-      image: postgres:10-alpine
-      volumes:
-        - ./data/db:/var/lib/postgresql/data
-      environment:
-        - DB_NAME=mydata
-        - DB_USER=postgres
-        - DB_PASS=postgres
-
-    selenium:
-      image: selenium/standalone-chrome
-      ports:
-      - 4444:4444
-
-    redis:
-        image: redis:latest
-        ports:
-            - 6379:6379
         volumes:
-            - ./config/redis.conf:/redis.conf
-        command: [ "redis-server", "/redis.conf" ]
+            - .:/usr/src/app
+        ports:
+            - "8000:8000"
+        environment:
+            - DEBUG=1
+            - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1
+            - CELERY_BROKER=redis://redis:6379/0
+        depends_on:
+            - pgdb
+            - redis
 
     celery:
-      build: .
-      command: celery -A sterling_square worker -l info
-      volumes:
-        - .:/code
-      depends_on:
-        - redis
-
-    celery-beat:
+        build: .
+        command: celery --A sterling_square  worker -B -l info & date
+        volumes:
+            - .:/usr/src/app
+        depends_on:
+            - django
+            - redis
+        environment:
+            - DEBUG=1
+            - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
+    celery_beat:
         build: .
         command: celery -A sterling_square beat -l info
         volumes:
-          - .:/code
+            - .:/usr/src/app
         depends_on:
-          - redis
+            - django
+            - redis
+        environment:
+            - DEBUG=1
+            - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
+
+    selenium:
+        image: selenium/standalone-chrome
+        ports:
+        - 4444:4444
+
+    pgdb:
+        image: postgres
+        container_name: pgdb
+        environment:
+            - POSTGRES_DB=postgres
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+            # - TZ=UTC
+            # - PGTZ='GMT+2'
+
+        volumes:
+            - pgdata:/var/lib/postgressql/data/
+
+    redis:
+        image: "redis:alpine"
+        command: redis-server
+        # ports:
+        #     - '6379:6379'
+        # networks:
+        #     - server
+        # ports:
+        #     - 0.0.0.0:6379:6379/tcp
+        # ports:
+        #     - '127.0.0.1:6379:6379/tcp'
+        # volumes:
+        #     - 'redis_data:/data:rw'
+        healthcheck:
+            test: redis-cli ping
+            interval: 3s
+            timeout: 5s
+            retries: 5
+
+    redisinsight:
+        image: 'redislabs/redisinsight:latest'
+        ports:
+            - '127.0.0.1:8001:8001'
+    adminer:
+        image: adminer
+        restart: always
+        ports:
+            - 8080:8080
+
+volumes:
+    pgdata:

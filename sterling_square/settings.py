@@ -155,7 +155,8 @@ DATABASES = {
         'USER': "postgres",
         'PASSWORD': "postgres",
         'HOST': "pgdb",
-        # 'PORT': 5432,
+        # 'HOST': "66.228.62.95",
+        'PORT': 5432,
         # 'OPTIONS': {
         #     'options': '-c statement_timeout={}'.format(60*1000),       # 60 seconds timeout
         # },
@@ -164,12 +165,24 @@ DATABASES = {
     }
 }
 
-#DATABASES = {
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'sterling_docker_test',
+#         'USER': 'postgres',
+#         'PASSWORD': '12345',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#         'CONN_MAX_AGE': 0,
+#     }
+# }
+
+# DATABASES = {
 #    'default': {
 #        'ENGINE': 'django.db.backends.sqlite3',
 #        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #    }
-#}
+# }
 #
 # DATABASES = {
 #     'default': {

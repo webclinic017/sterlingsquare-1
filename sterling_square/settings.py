@@ -85,15 +85,31 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
-
     'debug_toolbar',
     'rest_framework',
-
     'accounts',
     'main',
     'websocket',
     'channels',
+
+# stock_react_api
+    'rest_framework.authtoken',
+    'import_export',
+    'dashboard_api',
+    'stock_react_api.core',
+    'stock_react_api.kiteconnectapp',
+    'stock_react_api.user',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',
+    )
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

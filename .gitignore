@@ -41,3 +41,5 @@ celerybeat-schedule
 venv2
 *.out
 *.env
+/stock_react_api/core/migrations/
+/stock_react_api/kiteconnectapp/migrations/

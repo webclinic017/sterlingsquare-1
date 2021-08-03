@@ -246,12 +246,20 @@ def home(request):
     return render(request, 'kiteconnectapp/dashboard.html', context={})
 
 
-def upload(request):
-    # used for uploading NSE stock data to Instrument List
-    data = pd.read_excel('/home/pradeep/Documents/Sterling_square_django/sterlingsquare/stock_react_api/kiteconnectapp/NSE_data.xlsx')
+class AddInstrumentToken(APIView):
+    def post(self, request):
+        # used for uploading NSE stock data to Instrument List
+        # data = pd.read_excel('NSE_data.xlsx')
+        try:
+            data = pd.read_excel(request.FILES['file'])
 
-    for index, row in data.iterrows():
-        InstrumentList.objects.create(instrument_token=row['instrument_token'], exchange_token=row['exchange_token'],
-                                      tradingsymbol=row['tradingsymbol'], name=row['name'])
-        print(index)
-    return render(request, 'kiteconnectapp/dashboard.html', context={})
+            for index, row in data.iterrows():
+                InstrumentList.objects.create(instrument_token=row['instrument_token'],
+                                              exchange_token=row['exchange_token'],
+                                              tradingsymbol=row['tradingsymbol'], name=row['name'])
+                # print(index)
+                temp = [{"message": "successfully uploaded"}]
+            return Response(temp, status=status.HTTP_200_OK)
+        except:
+            temp = [{"message": "error"}]
+            return Response(temp, status=status.HTTP_404_NOT_FOUND)

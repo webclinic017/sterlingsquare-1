@@ -51,18 +51,27 @@ class FileUploadViewSet(generics.CreateAPIView):
         serializer_class = FileSerializer(data=request.data)
         portfolio_count = portfolio.objects.filter(user=request.user).count()
         if 'file' not in request.FILES or not serializer_class.is_valid():
-            # If file not found
+            # If file not present
             return Response(status=status.HTTP_400_BAD_REQUEST)
         else:
             if portfolio_count < 3:
                 portfolio_name = request.data['portfolio_name']
                 df = pd.read_excel(request.FILES['file'])
-                # handle the uploaded file
-                data = handle_uploaded_file(df, request.user, portfolio_name)
-                return Response(status=status.HTTP_201_CREATED, data=data)
+                # print('test:', list(df.columns))
+                if list(df.columns) == ['tradingsymbol', 'buy_price', 'quantity']:
+                    data = handle_uploaded_file(df, request.user, portfolio_name)
+                    return Response(status=status.HTTP_201_CREATED, data=data)
+                # elif list(df.columns) != ['tradingsymbol', 'buy_price', 'quantity']:
+                #     return Response(
+                #         "Upload file column name should be exact as i.e 'tradingsymbol' in first column, 'buy_price' in second column and 'quantity' in third column ",
+                #         status=status.HTTP_200_OK)
+                else:
+                    return Response("Upload file is not in proper format please refer from sample file",
+                                    status=status.HTTP_200_OK)
+
             else:
                 message = "You already have 3 active portfolios. Inorder to create new please delete previous portfolio."
-                return Response(message, status=status.HTTP_201_CREATED)
+                return Response(message, status=status.HTTP_200_OK)
 
 
 class FileUploadErrViewSet(generics.CreateAPIView):
@@ -84,7 +93,7 @@ class FileUploadErrViewSet(generics.CreateAPIView):
                 # print('test:', list(df.columns))
                 if list(df.columns) == ['tradingsymbol', 'buy_price', 'quantity']:
                     data = handle_uploaded_file_err(df, request.user, portfolio_name)
-                    return Response(status=status.HTTP_201_CREATED, data=data)
+                    return Response(status=status.HTTP_200_OK, data=data)
                 # elif list(df.columns) != ['tradingsymbol', 'buy_price', 'quantity']:
                 #     return Response(
                 #         "Upload file column name should be exact as i.e 'tradingsymbol' in first column, 'buy_price' in second column and 'quantity' in third column ",
@@ -140,9 +149,9 @@ class Dashboard_mystocks(generics.CreateAPIView):
             elif (request.data['action'] == 'delete'):
                 # deleting requested portfolio
                 my_portfolio.delete()
-                curr_user = self.request.user
-                curr_user.active_portfolio = curr_user.active_portfolio - 1
-                curr_user.save()
+                # curr_user = self.request.user
+                # curr_user.active_portfolio = curr_user.active_portfolio - 1
+                # curr_user.save()
                 data = "Portfolio " + request.data['portfolio_name'] + " deleted successfully"
                 return Response(status=status.HTTP_201_CREATED, data=data)
             else:
@@ -180,9 +189,9 @@ def handle_uploaded_file(df, user, portfolio_name):
         return "Portfolio name is required"
     # create new portfolio
     my_portfolio = portfolio.objects.create(name=portfolio_name, user=user)
-    curr_user.active_portfolio = curr_user.active_portfolio + 1
-    curr_user.save()
-    print(curr_user.active_portfolio)
+    # curr_user.active_portfolio = curr_user.active_portfolio + 1
+    # curr_user.save()
+    # print(curr_user.active_portfolio)
     my_portfolio.save()
     data = df
     err = []

@@ -137,7 +137,9 @@ class AutoLogin:
             time.sleep(5)
 
             "calling auth/step_2 api"
-            requests.get(self.driver.current_url)
+            driver_url = self.driver.current_url
+            api_url = "{}/auth/step_2".format(self.APPLICATION_HOST) + "?" + driver_url.split('?')[-1]
+            requests.get(api_url)
             time.sleep(5)
             print("Step 2 Done ...")
             # WebDriverWait(driver=self.driver, timeout=50).until(

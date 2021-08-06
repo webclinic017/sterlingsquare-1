@@ -1,4 +1,3 @@
-
 """
 Django settings for sterling_square project.
 
@@ -17,7 +16,6 @@ import datetime
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.integrations.redis import RedisIntegration
-
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -86,15 +84,30 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
-
     'debug_toolbar',
     'rest_framework',
-
     'accounts',
     'main',
     'websocket',
     'channels',
+    # stock_react_api
+    'rest_framework.authtoken',
+    'import_export',
+    'dashboard_api',
+    'stock_react_api.core',
+    'stock_react_api.kiteconnectapp',
+    'stock_react_api.user',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',
+    )
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -113,7 +126,6 @@ SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
-
 
 ROOT_URLCONF = 'sterling_square.urls'
 
@@ -146,9 +158,9 @@ CHANNEL_LAYERS = {
     },
 }
 
-#Database
-#https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-#DB settings
+# Database
+# https://docs.djangoproject.com/en/3.0/ref/settings/#databases
+# DB settings
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -181,12 +193,12 @@ DATABASES = {
     }
 }
 
-#DATABASES = {
+# DATABASES = {
 #    'default': {
 #        'ENGINE': 'django.db.backends.sqlite3',
 #        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #    }
-#}
+# }
 #
 # DATABASES = {
 #     'default': {
@@ -246,7 +258,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
@@ -291,7 +303,6 @@ CHANNEL_LAYERS = {
         "BACKEND": "channels.layers.InMemoryChannelLayer"
     }
 }
-
 
 try:
     from .celery_file import *

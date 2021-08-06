@@ -886,13 +886,11 @@ class DashboardAPI(APIView):
                         except:
                             pass
                         try:
-                            realised_gainloss = (float(current_price) - float(
-                                pos_obj.transaction_details.price)) * int(
-                                share_num)
-                            gl_obj = GainLossHistory.objects.get(
-                                position_obj=pos_obj)
-                            gl_obj.realised_gainloss += num_quantize(
-                                realised_gainloss)
+                            realised_gainloss = (float(current_price) - float(pos_obj.transaction_details.price)) * int(share_num)
+                            gl_obj = GainLossHistory.objects.get(position_obj=pos_obj)
+                            temp_var = num_quantize(gl_obj.realised_gainloss)
+                            temp_var = temp_var + num_quantize(realised_gainloss)
+                            gl_obj.realised_gainloss = temp_var
                             buyingpower += realised_gainloss
                             print(
                                 ",,,,,,,,,,,,,,,,1111111111      buyingpower",
@@ -916,13 +914,11 @@ class DashboardAPI(APIView):
                         except:
                             pass
                         try:
-                            realised_gainloss = (float(current_price) - float(
-                                pos_obj.transaction_details.price)) * int(
-                                share_num)
-                            gl_obj = GainLossHistory.objects.get(
-                                position_obj=pos_obj)
-                            gl_obj.realised_gainloss += num_quantize(
-                                realised_gainloss)
+                            realised_gainloss = (float(current_price) - float(pos_obj.transaction_details.price)) * int(share_num)
+                            gl_obj = GainLossHistory.objects.get(position_obj=pos_obj)
+                            temp_var = num_quantize(gl_obj.realised_gainloss)
+                            temp_var = temp_var + num_quantize(realised_gainloss)
+                            gl_obj.realised_gainloss = temp_var
                             buyingpower += realised_gainloss
                             print(
                                 ",,,,,,,,,,,,,,,,2222222222222    buyingpower",
@@ -946,13 +942,11 @@ class DashboardAPI(APIView):
                         except:
                             pass
                         try:
-                            realised_gainloss = (float(current_price) - float(
-                                pos_obj.transaction_details.price)) * int(
-                                stock_num)
-                            gl_obj = GainLossHistory.objects.get(
-                                position_obj=pos_obj)
-                            gl_obj.realised_gainloss += num_quantize(
-                                realised_gainloss)
+                            realised_gainloss = (float(current_price) - float(pos_obj.transaction_details.price)) * int(share_num)
+                            gl_obj = GainLossHistory.objects.get(position_obj=pos_obj)
+                            temp_var = num_quantize(gl_obj.realised_gainloss)
+                            temp_var = temp_var + num_quantize(realised_gainloss)
+                            gl_obj.realised_gainloss = temp_var
                             buyingpower += realised_gainloss
                             print(
                                 ",,,,,,,,,,,,,,,,33333333333      buyingpower",
@@ -3177,13 +3171,11 @@ class StockPageAPI(APIView):
                                 except:
                                     pass
                                 try:
-                                    realised_gainloss = (float(current_price) - float(
-                                        pos_obj.transaction_details.price)) * int(
-                                        share_num)
-                                    gl_obj = GainLossHistory.objects.get(
-                                        position_obj=pos_obj)
-                                    gl_obj.realised_gainloss += num_quantize(
-                                        realised_gainloss)
+                                    realised_gainloss = (float(current_price) - float(pos_obj.transaction_details.price)) * int(share_num)
+                                    gl_obj = GainLossHistory.objects.get(position_obj=pos_obj)
+                                    temp_var = num_quantize(gl_obj.realised_gainloss)
+                                    temp_var = temp_var + num_quantize(realised_gainloss)
+                                    gl_obj.realised_gainloss = temp_var
                                     # Incorrect Approach
                                     # buying_power += realised_gainloss
                                     # Correct Approach
@@ -3214,13 +3206,12 @@ class StockPageAPI(APIView):
                                 except:
                                     pass
                                 try:
-                                    realised_gainloss = (float(current_price) - float(
-                                        pos_obj.transaction_details.price)) * int(
-                                        share_num)
-                                    gl_obj = GainLossHistory.objects.get(
-                                        position_obj=pos_obj)
-                                    gl_obj.realised_gainloss += num_quantize(
-                                        realised_gainloss)
+                                    realised_gainloss = (float(current_price) - float(pos_obj.transaction_details.price)) * int(share_num)
+                                    gl_obj = GainLossHistory.objects.get(position_obj=pos_obj)
+                                    temp_var = num_quantize(gl_obj.realised_gainloss)
+                                    temp_var = temp_var + num_quantize(realised_gainloss)
+                                    gl_obj.realised_gainloss = temp_var
+
                                     # Incorrect Approach
                                     # buying_power += realised_gainloss
                                     # Correct Approach
@@ -3252,13 +3243,12 @@ class StockPageAPI(APIView):
                                 except:
                                     pass
                                 try:
-                                    realised_gainloss = (float(current_price) - float(
-                                        pos_obj.transaction_details.price)) * int(
-                                        stock_num)
-                                    gl_obj = GainLossHistory.objects.get(
-                                        position_obj=pos_obj)
-                                    gl_obj.realised_gainloss += num_quantize(
-                                        realised_gainloss)
+                                    realised_gainloss = (float(current_price) - float(pos_obj.transaction_details.price)) * int(stock_num)
+                                    gl_obj = GainLossHistory.objects.get(position_obj=pos_obj)
+                                    temp_var = num_quantize(gl_obj.realised_gainloss)
+                                    temp_var = temp_var + num_quantize(realised_gainloss)
+                                    gl_obj.realised_gainloss = temp_var
+
                                     # Incorrect Approach
                                     # buying_power += realised_gainloss
                                     # Correct Approach

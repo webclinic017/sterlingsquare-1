@@ -1,4 +1,6 @@
 import os
+import time
+import requests
 
 from django.conf import settings
 
@@ -43,14 +45,14 @@ class AutoLogin:
         print("++"*2)
 
         self.chrome_options = Options()
-        # self.chrome_options.add_argument("--headless")
+        self.chrome_options.add_argument("--headless")
         # if "localhost" in self.APPLICATION_HOST or "127.0.0.1" in self.APPLICATION_HOST:
         #     pass
         # else:
-        #     self.chrome_options.add_argument("--no-sandbox")
-        # self.chrome_options.add_argument("--disable-gpu")
-        # self.chrome_options.add_argument("--window-size=1366x768")
-        # self.chrome_options.add_argument('--disable-dev-shm-usage')
+        self.chrome_options.add_argument("--no-sandbox")
+        self.chrome_options.add_argument("--disable-gpu")
+        self.chrome_options.add_argument("--window-size=1366x768")
+        self.chrome_options.add_argument('--disable-dev-shm-usage')
         # self.chrome_options.add_argument(
         #     "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36"
         # )
@@ -88,11 +90,16 @@ class AutoLogin:
             print(self.APPLICATION_HOST)
             print("++"*30)
             if "localhost" in self.APPLICATION_HOST or "127.0.0.1" in self.APPLICATION_HOST:
-                self.driver = webdriver.Chrome(self.CHROME_DRIVER_PATH, options=self.chrome_options)
+                self.driver = webdriver.Remote(self.CHROME_DRIVER_PATH, options=self.chrome_options)
             else:
                 self.driver = webdriver.Remote(self.CHROME_DRIVER_PATH, options=self.chrome_options)
+
+            resp = requests.get(self.LOGIN_URL)
+            time.sleep(5)
+            url = resp.url
+
             self.driver.delete_all_cookies()
-            self.driver.get(self.LOGIN_URL)
+            self.driver.get(url)
 
             print("Waiting for Step 1 ...")
             # Wait for the userid Input field
@@ -127,13 +134,17 @@ class AutoLogin:
 
             second_click = self.driver.find_element_by_class_name('button-orange')
             second_click.click()
+            time.sleep(5)
 
+            "calling auth/step_2 api"
+            requests.get(self.driver.current_url)
+            time.sleep(5)
             print("Step 2 Done ...")
-            WebDriverWait(driver=self.driver, timeout=50).until(
-                EC.presence_of_element_located(
-                    (By.CLASS_NAME, 'nav-outer')
-                )
-            )
+            # WebDriverWait(driver=self.driver, timeout=50).until(
+            #     EC.presence_of_element_located(
+            #         (By.CLASS_NAME, 'nav-outer')
+            #     )
+            # )
             if auto_close:
                 self.close()
         except Exception as e:

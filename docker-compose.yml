@@ -4,11 +4,7 @@ services:
     django:
         build: .
         container_name: django
-        command: >
-          sh -c "python3 manage.py migrate &&
-                 python3 manage.py migrate &&
-                 python3 manage.py runserver 0.0.0.0:8000"
-
+        command: python3 manage.py runserver 0.0.0.0:8000
         volumes:
             - .:/usr/src/app
         ports:
@@ -23,7 +19,7 @@ services:
 
     celery:
         build: .
-        command: celery --A sterling_square  worker -B -l info & date
+        command: celery -A sterling_square worker -l info
         volumes:
             - .:/usr/src/app
         depends_on:
@@ -32,6 +28,7 @@ services:
         environment:
             - DEBUG=1
             - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
+
     celery_beat:
         build: .
         command: celery -A sterling_square beat -l info

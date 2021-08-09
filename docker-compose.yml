@@ -46,6 +46,15 @@ services:
             - DEBUG=1
             - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
 
+    flower:
+        image: mher/flower
+        restart: always
+        environment:
+          - CELERY_BROKER_URL=redis://redis:6379
+          - FLOWER_PORT=8888
+        ports:
+          - 8888:8888
+          
     selenium:
         image: selenium/standalone-chrome
         ports:

@@ -20,7 +20,7 @@ services:
 
     celery:
         build: .
-        command: celery -A sterling_square worker -l info
+        command: celery -A sterling_square worker --pool=prefork --concurrency=8 --loglevel=info
         volumes:
             - .:/usr/src/app
             - /etc/timezone:/etc/timezone:ro

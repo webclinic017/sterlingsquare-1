@@ -3978,3 +3978,25 @@ class GetTopGainers(APIView):
             # })
         except Exception as e:
             return ResponseBadRequest(str(e))
+
+class UpdateBuyingPower(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        buyingpower = request.data.get("buyingpower")
+
+        is_num = False
+        try:
+            num = float(buyingpower)
+            is_num = True
+        except:
+            pass
+
+        if is_num:
+            identity_instance = UserDetails.objects.get(
+                                    user=request.user).identity
+            identity_instance.buyingpower = buyingpower
+            identity_instance.save()
+            return Response("Buying power updated!")
+        else:
+            return Response("Please enter valid number!")

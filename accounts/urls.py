@@ -25,5 +25,6 @@ urlpatterns = [
          name='position_table'),
     path('latest-gain-loss/', views.GetLatestGainLossView.as_view(),
          name='top_gainers'),
-    path('logout/', views.logout_user, name='logout')
+    path('logout/', views.logout_user, name='logout'),
+    path('buyingpower/', views.UpdateBuyingPower.as_view(), name='buyingpower'),
 ]

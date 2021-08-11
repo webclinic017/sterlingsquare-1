@@ -7,6 +7,8 @@ services:
         command: python3 manage.py runserver 0.0.0.0:8000
         volumes:
             - .:/usr/src/app
+            - /etc/timezone:/etc/timezone:ro
+            - /etc/localtime:/etc/localtime:ro
         ports:
             - "8000:8000"
         environment:
@@ -14,7 +16,6 @@ services:
             - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1
             - CELERY_BROKER=redis://redis:6379/0
         depends_on:
-            - pgdb
             - redis
 
     celery:
@@ -22,6 +23,8 @@ services:
         command: celery -A sterling_square worker -l info
         volumes:
             - .:/usr/src/app
+            - /etc/timezone:/etc/timezone:ro
+            - /etc/localtime:/etc/localtime:ro
         depends_on:
             - django
             - redis
@@ -34,6 +37,8 @@ services:
         command: celery -A sterling_square beat -l info
         volumes:
             - .:/usr/src/app
+            - /etc/timezone:/etc/timezone:ro
+            - /etc/localtime:/etc/localtime:ro
         depends_on:
             - django
             - redis
@@ -46,32 +51,9 @@ services:
         ports:
         - 4444:4444
 
-    pgdb:
-        image: postgres
-        container_name: pgdb
-        environment:
-            - POSTGRES_DB=postgres
-            - POSTGRES_USER=postgres
-            - POSTGRES_PASSWORD=postgres
-            # - TZ=UTC
-            # - PGTZ='GMT+2'
-
-        volumes:
-            - pgdata:/var/lib/postgressql/data/
-
     redis:
         image: "redis:alpine"
         command: redis-server
-        # ports:
-        #     - '6379:6379'
-        # networks:
-        #     - server
-        # ports:
-        #     - 0.0.0.0:6379:6379/tcp
-        # ports:
-        #     - '127.0.0.1:6379:6379/tcp'
-        # volumes:
-        #     - 'redis_data:/data:rw'
         healthcheck:
             test: redis-cli ping
             interval: 3s
@@ -82,11 +64,3 @@ services:
         image: 'redislabs/redisinsight:latest'
         ports:
             - '127.0.0.1:8001:8001'
-    adminer:
-        image: adminer
-        restart: always
-        ports:
-            - 8080:8080
-
-volumes:
-    pgdata:

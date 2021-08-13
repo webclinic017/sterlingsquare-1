@@ -19,10 +19,8 @@ import pyrebase
 import json
 import logging
 import pandas as pd
-
-
-# from rest_framework.authentication import TokenAuthentication, BasicAuthentication
-# from rest_framework.permissions import IsAuthenticated
+import statistics
+from dateutil.relativedelta import relativedelta
 
 
 class DashboardApiLogin(APIView):
@@ -299,6 +297,9 @@ class DashboardApiSectorWiseData(APIView):
 class DailyUpdatePortfolioPerformanceData(APIView):
 
     def post(self, request):
+        """
+        daily update performance table data for all users
+        """
         try:
             config = {
                 "apiKey": "AIzaSyCU9JP2yixeKjw3NE30Pb0I0D0UQjV94gA",
@@ -323,11 +324,18 @@ class DailyUpdatePortfolioPerformanceData(APIView):
                     t_cost = []
                     t_value = []
                     stock_val = {}
+
+                    # update_date = firebase.database().child("last_updated").get().val().split(' ')[0]
+                    update_date = "2020-08-23"
+
+                    if PortfolioPerformance.objects.filter(user_id_id=i, portfolio_id_id=j, date=update_date):
+                        data_del = PortfolioPerformance.objects.get(user_id_id=i, portfolio_id_id=j, date=update_date)
+                        data_del.delete()
+                    else:
+                        pass
                     for entry in data:
                         sym.append(entry.tradingsymbol)
 
-                        # update_date = firebase.database().child("last_updated").get().val().split(' ')[0]
-                        update_date = "2021-08-16"
                         quantity = entry.quantity
                         t_quantity.append((quantity))
                         current_day_last_price = firebase.database().child("Stock").child(entry.instrument_token).child(
@@ -344,10 +352,24 @@ class DailyUpdatePortfolioPerformanceData(APIView):
                     # total_quantity = sum(t_quantity)
                     total_quantity = 55
                     yesterday_date = datetime.strptime(update_date, '%Y-%m-%d').date() - timedelta(days=1)
-                    if PortfolioPerformance.objects.filter(user_id_id=i, portfolio_id_id=j, date=yesterday_date):
+                    print('dasdadad:', yesterday_date)
+
+                    # print('asdsas:',lat_entry_data)
+                    if PortfolioPerformance.objects.filter(user_id_id=i, portfolio_id_id=j):
+                        lat_entry_data = \
+                        PortfolioPerformance.objects.filter(user_id_id=i, portfolio_id_id=j).order_by('-date')[0]
+                        dte_date = lat_entry_data.date
+                        print('ggggggggggggggggg:', lat_entry_data.date)
+                    else:
+                        dte_date = None
+                        pass
+                    # if PortfolioPerformance.objects.filter(user_id_id=i, portfolio_id_id=j, date=yesterday_date):
+                    if PortfolioPerformance.objects.filter(user_id_id=i, portfolio_id_id=j, date=dte_date):
                         try:
+                            # prev_data = PortfolioPerformance.objects.get(user_id_id=i, portfolio_id_id=j,
+                            #                                              date=yesterday_date)
                             prev_data = PortfolioPerformance.objects.get(user_id_id=i, portfolio_id_id=j,
-                                                                         date=yesterday_date)
+                                                                         date=lat_entry_data.date)
                             prev_tot_val = prev_data.total_value
 
                             prev_daily_return = prev_data.daily_return
@@ -355,8 +377,8 @@ class DailyUpdatePortfolioPerformanceData(APIView):
 
                             prev_sym = prev_data.symbols
                             dict_val = prev_data.stock_value
-                            symm = ['AKSHARCHEM', 'AKASH', 'AJANTPHARM', 'AIAENG', 'AAVAS']
-                            if set(prev_sym) == set(symm):
+                            symm = ['AKSHARCHEM', 'AKASH', 'AJANTPHARM', 'AIAENG', 'AAVAS', 'AARVI', 'AARTIDRUGS']
+                            if set(prev_sym) == set(symm):  # symm i.e sym
                                 daily_return = ((float(total_value) - float(prev_tot_val)) / float(prev_tot_val)) * 100
 
                             else:
@@ -377,16 +399,23 @@ class DailyUpdatePortfolioPerformanceData(APIView):
                         cummeletive_return = 0
 
                     if PortfolioPerformance.objects.filter(user_id_id=i, portfolio_id_id=j, date=update_date):
-                        data = PortfolioPerformance.objects.get(user_id_id=i, portfolio_id_id=j, date=update_date)
+                        data_dl = PortfolioPerformance.objects.get(user_id_id=i, portfolio_id_id=j, date=update_date)
+                        data_dl.delete()
+                        performance = PortfolioPerformance(user_id_id=i, portfolio_id_id=j, total_cost=total_cost,
+                                                           total_value=total_value, total_quantity=total_quantity,
+                                                           date=update_date, daily_return=round(daily_return, 2),
+                                                           cummeletive_return=round(cummeletive_return, 2), symbols=sym,
+                                                           stock_value=stock_val)
+                        performance.save()
                         # print('asdadadsasdasdsa:',data.symbols)
-                        data.total_cost = total_cost
-                        data.total_value = total_value
-                        data.total_quantity = total_quantity
-                        data.symbols = sym
-                        data.stock_value = stock_val
-                        data.daily_return = round(daily_return, 2)
-                        data.cummeletive_return = round(cummeletive_return, 2)
-                        data.save()
+                        # data.total_cost = total_cost
+                        # data.total_value = total_value
+                        # data.total_quantity = total_quantity
+                        # data.symbols = sym
+                        # data.stock_value = stock_val
+                        # data.daily_return = round(daily_return, 2)
+                        # data.cummeletive_return = round(cummeletive_return, 2)
+                        # data.save()
                     else:
                         performance = PortfolioPerformance(user_id_id=i, portfolio_id_id=j, total_cost=total_cost,
                                                            total_value=total_value, total_quantity=total_quantity,
@@ -401,3 +430,110 @@ class DailyUpdatePortfolioPerformanceData(APIView):
         except:
             print("-----error-------------")
             return Response("error", status=status.HTTP_200_OK)
+
+
+class DashboardApiGetPortfolioStatistics(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        """
+        api for portfolio statistics data
+        """
+        try:
+            auth = request.headers.get('Authorization')
+            token = Token.objects.get(key=auth.replace("Token ", ""))
+            user_id = token.user_id
+            portfolio_name = request.data['portfolio_name']
+
+            my_portfolio = portfolio.objects.get(user=user_id, name=portfolio_name)
+
+            time_period = request.data['time_period']
+            if time_period == "1d":
+                dte = datetime.today() - relativedelta(days=1)
+                pass
+            elif time_period == "1w":
+                dte = datetime.today() - relativedelta(days=7)
+                pass
+            elif time_period == "1m":
+                dte = datetime.today() - relativedelta(months=1)
+                pass
+            elif time_period == "6m":
+                dte = datetime.today() - relativedelta(months=6)
+                pass
+            elif time_period == "1y":
+                dte = datetime.today() - relativedelta(years=1)
+                pass
+            elif time_period == "2y":
+                dte = datetime.today() - relativedelta(years=2)
+                pass
+            elif time_period == "3y":
+                dte = datetime.today() - relativedelta(years=3)
+                pass
+            else:
+                return Response("enter proper time_period format", status=status.HTTP_404_NOT_FOUND)
+
+            items = PortfolioPerformance.objects.filter(user_id_id=user_id, portfolio_id_id=my_portfolio, date__gte=dte)
+
+            t_daily_return = []
+            for i in items:
+                t_daily_return.append(i.daily_return)
+            x = statistics.mean(t_daily_return)
+
+            return Response(
+                {"time_period": time_period, "mean": round(x, 2), "stdev": round(statistics.stdev(t_daily_return), 2)},
+                status=status.HTTP_200_OK)
+        except:
+            temp = [{"message": "data not found"}]
+            return Response(temp, status=status.HTTP_404_NOT_FOUND)
+
+
+class DashboardApiGetPortfolioPerformance(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        """
+        api for portfolio performance data
+        """
+        try:
+            auth = request.headers.get('Authorization')
+            token = Token.objects.get(key=auth.replace("Token ", ""))
+            user_id = token.user_id
+            portfolio_name = request.data['portfolio_name']
+
+            my_portfolio = portfolio.objects.get(user=user_id, name=portfolio_name)
+
+            time_period = request.data['time_period']
+            if time_period == "1d":
+                dte = datetime.today() - relativedelta(days=1)
+                pass
+            elif time_period == "1w":
+                dte = datetime.today() - relativedelta(days=7)
+                pass
+            elif time_period == "1m":
+                dte = datetime.today() - relativedelta(months=1)
+                pass
+            elif time_period == "6m":
+                dte = datetime.today() - relativedelta(months=6)
+                pass
+            elif time_period == "1y":
+                dte = datetime.today() - relativedelta(years=1)
+                pass
+            elif time_period == "2y":
+                dte = datetime.today() - relativedelta(years=2)
+                pass
+            elif time_period == "3y":
+                dte = datetime.today() - relativedelta(years=3)
+                pass
+            else:
+                return Response("enter proper time_period format", status=status.HTTP_404_NOT_FOUND)
+
+            items = PortfolioPerformance.objects.filter(user_id_id=user_id, portfolio_id_id=my_portfolio,
+                                                        date__gte=dte).order_by('-date')
+            dta = {}
+            for i in items:
+                dta[str(i.date)] = i.cummeletive_return
+
+            return Response(dta, status=status.HTTP_200_OK)
+        except:
+            temp = [{"message": "data not found"}]
+            return Response(temp, status=status.HTTP_404_NOT_FOUND)

@@ -1,8 +1,6 @@
 import pandas as pd
 from sterling_square import celery_app
 
-from celery.schedules import crontab
-
 from utils.AutoLogin import AutoLogin
 from .models import StockPrices
 from utils.util_functions import init_singleton
@@ -14,34 +12,6 @@ from kiteconnect import KiteConnect
 
 from accounts.models import StockNames
 from utils.util_functions import read_zerodha_credentials
-
-
-celery_app.conf.beat_schedule = {
-    'accounts.tasks.sync_credentials': {
-        'task': 'accounts.tasks.sync_credentials',
-        'schedule': crontab(hour="*/3"),
-    },
-    'accounts.tasks.clear_old_stock_data': {
-        # Remove old stock data on every weekday at 11:00AM
-        'task': 'accounts.tasks.clear_old_stock_data',
-        'schedule': crontab(minute="0", hour="11", day_of_month="*", month_of_year="*", day_of_week="1-5"),
-    },
-    'accounts.tasks.clear_old_stock_data_2': {
-        # Remove old stock data on every weekday at 11:00AM
-        'task': 'accounts.tasks.clear_old_stock_data_2',
-        'schedule': crontab(minute="0", hour="11", day_of_month="*", month_of_year="*", day_of_week="1-5"),
-    },
-    'accounts.tasks.load_symbols': {
-        # Remove old stock data on every weekday at 06:30AM
-        'task': 'accounts.tasks.load_symbols',
-        'schedule': crontab(minute="30", hour="6", day_of_month="*", month_of_year="*", day_of_week="1-5"),
-    },
-    # 'accounts.tasks.initialize_singleton': {
-    #     'task': 'accounts.tasks.initialize_singleton',
-    #     'schedule': crontab(minute="*/1"),
-    # }
-}
-
 
 @celery_app.task()
 def initialize_singleton():

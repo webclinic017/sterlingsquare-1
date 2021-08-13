@@ -1,56 +1,10 @@
-from __future__ import absolute_import, unicode_literals
-
 import json
 import os
-import threading
-from datetime import timedelta
-import datetime
-
 import dateutil
 import requests
+import threading
+import datetime
 from celery.task import task
-from celery import Celery
-# set the default Django settings module for the 'celery' program.
-from django.conf import settings
-# from sterling_square import settings, tokens
-
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'sterling_square.settings')
-from nsepy import get_history
-
-app = Celery('sterling_square')
-# Using a string here means the worker don't have to serialize
-# the configuration object to child processes.
-# - namespace='CELERY' means all celery-related configuration keys
-#   should have a `CELERY_` prefix.
-app.config_from_object('django.conf:settings', namespace='CELERY')
-
-# Load task modules from all registered Django app configs.
-# app.autodiscover_tasks()
-app.autodiscover_tasks(lambda: getattr(settings, "INSTALLED_APPS"))
-app.conf.beat_schedule = {
-
-    'update_stock_scheduler': {
-        'task': 'update_stock_scheduler',
-        'schedule': timedelta(seconds=10),
-    },
-    'update_transaction_table_scheduler': {
-        'task': 'update_transaction_table_scheduler',
-        'schedule': timedelta(seconds=50),
-    },
-    'update_stock_market_details_scheduler': {
-        'task': 'update_stock_market_details_scheduler',
-        'schedule': timedelta(seconds=60),
-    },
-    'update_gainloss_table_scheduler': {
-        'task': 'update_gainloss_table',
-        'schedule': timedelta(seconds=3600),
-    },
-    'update_pos_table_latest_price_scheduler': {
-        'task': 'update_pos_table_latest_price',
-        'schedule': timedelta(seconds=5),
-    },
-}
-
 
 @task(name="update_stock_scheduler")
 def stock_scheduler():

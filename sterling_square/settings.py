@@ -294,6 +294,6 @@ CHANNEL_LAYERS = {
 
 
 try:
-    from .celery_file import *
+    from .celery_settings import *
 except ImportError as e:
     print(str(e))

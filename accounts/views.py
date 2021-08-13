@@ -41,7 +41,7 @@ from yahoo_fin import stock_info as si
 from nsetools import Nse
 from custom_packages.yahoo_finance import YahooFinance
 from accounts.forms import CustomAuthForm, UserDetailsForm, IdentityDetailsForm
-from sterling_square.celery_file import stock_update
+from sterling_square.tasks import stock_update
 from decimal import localcontext, Decimal, ROUND_HALF_UP
 from django.core.paginator import PageNotAnInteger
 from django.core.paginator import EmptyPage

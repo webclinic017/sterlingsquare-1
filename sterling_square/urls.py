@@ -19,6 +19,9 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('', include('main.urls')),
     path('', include('cwebsocket.urls')),
+    path('', include('dashboard_api.urls')),
+    path('', include('stock_react_api.kiteconnectapp.urls')),
+    path('user/', include('stock_react_api.user.urls')),  # For user registeration and login
 ]
 
 urlpatterns += staticfiles_urlpatterns()

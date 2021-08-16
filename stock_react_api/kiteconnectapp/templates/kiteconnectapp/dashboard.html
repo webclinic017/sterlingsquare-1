@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+		<h1>APIs :</h1>
+    {% comment %} <p>1. <a href="./dashboard/live">/dashboard/live</a></p> {% endcomment %}
+		<p>1. <a href="./dashboard/history">/dashboard/history</a></p>
+		<p>2. <a href="./dashboard/upload_err">/dashboard/upload_err</a></p>
+		<p>3. <a href="./dashboard/upload">/dashboard/upload</a></p>
+		{% comment %} <p>2. <a href="./dashboard/jsonupload">/dashboard/jsonupload</a></p> {% endcomment %}
+		<p>4. <a href="./dashboard/me/portfolio">/dashboard/me/portfolio</a></p>
+		<p>5. <a href="./dashboard/my_stocks/">dashboard/my_stocks/ (Action: view(to view my stocks), delete(to delete selected portfolio))</a></p>
+		<p>6. <a href="./user/register">/user/register</a></p>
+		<p>7. <a href="./user/login">/user/login</a></p>
+{% endblock %}

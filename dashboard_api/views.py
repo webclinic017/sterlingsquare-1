@@ -21,6 +21,7 @@ import logging
 import pandas as pd
 import statistics
 from dateutil.relativedelta import relativedelta
+import pymongo
 
 
 class DashboardApiLogin(APIView):
@@ -171,16 +172,22 @@ class DashboardApiSectorWiseData(APIView):
             my_portfolio = portfolio.objects.filter(user=user_id, name=portfolio_name).first()
             data = my_stocks.objects.filter(portfolio=my_portfolio).order_by('-name')
 
-            config = {
-                "apiKey": "AIzaSyCU9JP2yixeKjw3NE30Pb0I0D0UQjV94gA",
-                "authDomain": "kiteconnect-stock.firebaseapp.com",
-                "databaseURL": "https://kiteconnect-stock-default-rtdb.firebaseio.com",
-                "projectId": "kiteconnect-stock",
-                "storageBucket": "kiteconnect-stock.appspot.com",
-                "messagingSenderId": "981866107803",
-                "appId": "1:981866107803:web:568ffc6b464656a6f4c73e"
-            }
-            firebase = pyrebase.initialize_app(config)
+            # config = {
+            #     "apiKey": "AIzaSyCU9JP2yixeKjw3NE30Pb0I0D0UQjV94gA",
+            #     "authDomain": "kiteconnect-stock.firebaseapp.com",
+            #     "databaseURL": "https://kiteconnect-stock-default-rtdb.firebaseio.com",
+            #     "projectId": "kiteconnect-stock",
+            #     "storageBucket": "kiteconnect-stock.appspot.com",
+            #     "messagingSenderId": "981866107803",
+            #     "appId": "1:981866107803:web:568ffc6b464656a6f4c73e"
+            # }
+            # firebase = pyrebase.initialize_app(config)
+
+            # mongodb
+            m_client = pymongo.MongoClient("mongodb://50.116.32.224:27017/")
+            m_db = m_client["somy"]
+            m_col = m_db["kiteconnect"]
+
             logging.basicConfig(level=logging.DEBUG)
             sym = []
             t_current_day_last_price = []
@@ -189,8 +196,15 @@ class DashboardApiSectorWiseData(APIView):
             for entry in data:
                 sym.append(entry.tradingsymbol)
                 quantity = entry.quantity
-                current_day_last_price = firebase.database().child("Stock").child(entry.instrument_token).child(
-                    "last_price").get().val()
+                # current_day_last_price = firebase.database().child("Stock").child(entry.instrument_token).child(
+                #     "last_price").get().val()
+
+                dat = 'Stock.' + str(entry.instrument_token) + '.last_price'
+                dat_x = m_col.find({}, {'_id': 0, dat: 1})
+                for dat_i in dat_x:
+                    dat_z = dat_i.get('Stock').get(str(entry.instrument_token)).get('last_price')
+                current_day_last_price = dat_z
+
                 t_current_day_last_price.append(round((quantity * current_day_last_price), 2))
                 dataa[entry.tradingsymbol] = current_day_last_price
                 data_qty[entry.tradingsymbol] = quantity
@@ -292,8 +306,6 @@ class DashboardApiSectorWiseData(APIView):
 #             print("------------------")
 #
 #         return Response("ok", status=status.HTTP_200_OK)
-
-import pymongo
 
 
 def DailyUpdatePortfolioPerformanceData():
@@ -414,7 +426,7 @@ def DailyUpdatePortfolioPerformanceData():
                                 # daily_return = ((float(total_value) - (float(prev_tot_val) - 25210)) / (
                                 #         float(prev_tot_val) - 25210)) * 100
                                 daily_return = ((float(total_value) - (float(prev_tot_val) - sum(t_diff_sym))) / (
-                                            float(prev_tot_val) - sum(t_diff_sym))) * 100
+                                        float(prev_tot_val) - sum(t_diff_sym))) * 100
 
                             cummeletive_return = daily_return + prev_cummeletive_return
                         except:

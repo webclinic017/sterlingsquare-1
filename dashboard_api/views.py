@@ -105,58 +105,6 @@ class DashboardApiGetBuyingPower(APIView):
             return Response(temp, status=status.HTTP_404_NOT_FOUND)
 
 
-# class DashboardApiPortfolioPerformanceStock(APIView):
-#     # permission_classes = [IsAuthenticated]
-#
-#     def post(self, request):
-#         auth = request.headers.get('Authorization')
-#         token = Token.objects.get(key=auth.replace("Token ", ""))
-#         user_id = token.user_id
-#         portfolio_name = request.data['portfolio_name']
-#         my_portfolio = portfolio.objects.filter(user=user_id, name=portfolio_name).first()
-#         data = my_stocks.objects.filter(portfolio=my_portfolio).order_by('-name')
-#         new_list = []
-#         # for entry in data:
-#         #     new_list.append(entry.instrument_token)
-#         # print('test:', new_list)
-#         config = {
-#             "apiKey": "AIzaSyCU9JP2yixeKjw3NE30Pb0I0D0UQjV94gA",
-#             "authDomain": "kiteconnect-stock.firebaseapp.com",
-#             "databaseURL": "https://kiteconnect-stock-default-rtdb.firebaseio.com",
-#             "projectId": "kiteconnect-stock",
-#             "storageBucket": "kiteconnect-stock.appspot.com",
-#             "messagingSenderId": "981866107803",
-#             "appId": "1:981866107803:web:568ffc6b464656a6f4c73e"
-#             # measurementId: "G-9BRWTZYS5C"
-#         }
-#
-#         firebase = pyrebase.initialize_app(config)
-#         logging.basicConfig(level=logging.DEBUG)
-#         sym=[]
-#         total_qty=[]
-#         t_current_day_close_price=[]
-#         t_previous_day_close_price=[]
-#         for entry in data:
-#             sym.append(entry.tradingsymbol)
-#             quantity=entry.quantity
-#             current_day_close_price=firebase.database().child("Stock").child(entry.instrument_token).child("last_price").get().val()
-#             previous_day_close_price=firebase.database().child("Stock").child(entry.instrument_token).child("close").get().val()
-#             t_current_day_close_price.append(quantity*current_day_close_price)
-#             t_previous_day_close_price.append(quantity*previous_day_close_price)
-#
-#         print('test:', sym)
-#         print('test1:', total_qty)
-#         print('test2:', t_current_day_close_price)
-#         print('test3:', t_previous_day_close_price)
-#
-#         current_portfolio_value = sum(t_current_day_close_price)
-#         previous_day_portfolio_value =  sum(t_previous_day_close_price)
-#         portfolio_performance = (current_portfolio_value - previous_day_portfolio_value)/previous_day_portfolio_value
-#         print('portfolio_performance:',portfolio_performance*100)
-#         return Response("new_list")
-from django.db.models import Count
-
-
 class DashboardApiSectorWiseData(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -232,80 +180,172 @@ class DashboardApiSectorWiseData(APIView):
             return Response(temp, status=status.HTTP_404_NOT_FOUND)
 
 
-# class DashboardApiTesting(APIView):
-#     # permission_classes = [IsAuthenticated]
+#
+# # def DailyUpdatePortfolioPerformanceData():
+# class DailyUpdatePortfolioPerformanceData(APIView):
 #
 #     def post(self, request):
-#         config = {
-#             "apiKey": "AIzaSyCU9JP2yixeKjw3NE30Pb0I0D0UQjV94gA",
-#             "authDomain": "kiteconnect-stock.firebaseapp.com",
-#             "databaseURL": "https://kiteconnect-stock-default-rtdb.firebaseio.com",
-#             "projectId": "kiteconnect-stock",
-#             "storageBucket": "kiteconnect-stock.appspot.com",
-#             "messagingSenderId": "981866107803",
-#             "appId": "1:981866107803:web:568ffc6b464656a6f4c73e"
-#         }
-#         firebase = pyrebase.initialize_app(config)
-#         logging.basicConfig(level=logging.DEBUG)
+#         """
+#         daily update performance table data for all users
+#         """
+#         try:
+#             try:
+#                 # firebase -
+#                 # config = {
+#                 #     "apiKey": "AIzaSyCU9JP2yixeKjw3NE30Pb0I0D0UQjV94gA",
+#                 #     "authDomain": "kiteconnect-stock.firebaseapp.com",
+#                 #     "databaseURL": "https://kiteconnect-stock-default-rtdb.firebaseio.com",
+#                 #     "projectId": "kiteconnect-stock",
+#                 #     "storageBucket": "kiteconnect-stock.appspot.com",
+#                 #     "messagingSenderId": "981866107803",
+#                 #     "appId": "1:981866107803:web:568ffc6b464656a6f4c73e"
+#                 # }
+#                 # firebase = pyrebase.initialize_app(config)
+#                 # logging.basicConfig(level=logging.DEBUG)
 #
-#         user = User.objects.all().values_list('id', flat=True)
-#         for i in user:
-#             my_portfolio = portfolio.objects.filter(user=i).values_list('id', flat=True)
-#             for j in my_portfolio:
-#                 data = my_stocks.objects.filter(portfolio=j).order_by('-name')
-#                 print('data:', data)
-#                 sym = []
-#                 t_quantity = []
-#                 t_cost = []
-#                 t_value = []
-#                 for entry in data:
-#                     sym.append(entry.tradingsymbol)
-#                     update_date = firebase.database().child("last_updated").get().val().split(' ')[0]
-#                     quantity = entry.quantity
-#                     t_quantity.append((quantity))
-#                     current_day_last_price = firebase.database().child("Stock").child(entry.instrument_token).child(
-#                         "last_price").get().val()
-#                     t_value.append(round((quantity * current_day_last_price), 2))
-#                     print('sada:', float(entry.buy_price) * quantity)
-#                     t_cost.append(round((float(entry.buy_price)) * quantity, 2))
-#                 print('asdada:', t_cost)
-#                 total_value = sum(t_value)
-#                 total_cost = sum(t_cost)
-#                 total_quantity = sum(t_quantity)
-#                 yesterday_date = datetime.strptime(update_date, '%Y-%m-%d').date() - timedelta(days=1)
-#                 if PortfolioPerformance.objects.filter(user_id_id=i, portfolio_id_id=j, date=yesterday_date):
-#                     try:
-#                         prev_data = PortfolioPerformance.objects.get(user_id_id=i, portfolio_id_id=j, date=yesterday_date)
-#                         prev_tot_val = prev_data.total_value
-#                         print('aaaaaaaaa:',prev_tot_val)
-#                         prev_daily_return = prev_data.daily_return
-#                         print('ggggggggg:',((float(total_value) - float(prev_tot_val)) / float(prev_tot_val)))
-#                         daily_return = ((float(total_value) - float(prev_tot_val)) / float(prev_tot_val)) * 100
-#                         cummeletive_return = daily_return + prev_daily_return
-#                     except:
-#                         pass
-#                 else:
-#                     daily_return = 0
-#                     cummeletive_return = 0
+#                 # mongodb
+#                 m_client = pymongo.MongoClient("mongodb://50.116.32.224:27017/")
+#                 m_db = m_client["somy"]
+#                 m_col = m_db["kiteconnect"]
 #
-#                 if PortfolioPerformance.objects.filter(user_id_id=i, portfolio_id_id=j, date=update_date):
-#                     data = PortfolioPerformance.objects.get(user_id_id=i, portfolio_id_id=j, date=update_date)
-#                     data.total_cost = total_cost
-#                     data.total_value = total_value
-#                     data.total_quantity = total_quantity
-#                     data.daily_return = round(daily_return,2)
-#                     data.cummeletive_return = round(cummeletive_return,2)
-#                     data.save()
-#                 else:
-#                     performance = PortfolioPerformance(user_id_id=i, portfolio_id_id=j, total_cost=total_cost,
-#                                                        total_value=total_value, total_quantity=total_quantity,
-#                                                        date=update_date, daily_return=round(daily_return,2),
-#                                                        cummeletive_return=round(cummeletive_return,2))
-#                     performance.save()
+#                 user = User.objects.all().values_list('id', flat=True)
+#                 for i in user:
+#                     my_portfolio = portfolio.objects.filter(user=i).values_list('id', flat=True)
+#                     for j in my_portfolio:
+#                         data = my_stocks.objects.filter(portfolio=j).order_by('-name')
+#                         # print('data:', data)
+#                         sym = []
+#                         t_quantity = []
+#                         t_cost = []
+#                         t_value = []
+#                         stock_val = {}
 #
-#             print("------------------")
+#                         # update_date = firebase.database().child("last_updated").get().val().split(' ')[0]
+#                         # m_dx = m_col.find({}, {'_id': 0, 'lastModified': 1})
+#                         # for m_i in m_dx:
+#                         #     m_z = m_i.get('lastModified')
+#                         # update_date = m_z.date()
+#                         # print('update_date:', update_date)
+#                         update_date = "2021-08-18"
 #
-#         return Response("ok", status=status.HTTP_200_OK)
+#                         if PortfolioPerformance.objects.filter(user_id_id=i, portfolio_id_id=j, date=update_date):
+#                             data_del = PortfolioPerformance.objects.get(user_id_id=i, portfolio_id_id=j, date=update_date)
+#                             data_del.delete()
+#                         else:
+#                             pass
+#                         for entry in data:
+#                             sym.append(entry.tradingsymbol)
+#
+#                             quantity = entry.quantity
+#                             t_quantity.append((quantity))
+#
+#                             # current_day_last_price = firebase.database().child("Stock").child(entry.instrument_token).child(
+#                             #     "last_price").get().val()
+#
+#                             dat = 'Stock.' + str(entry.instrument_token) + '.last_price'
+#                             dat_x = m_col.find({}, {'_id': 0, dat: 1})
+#                             for dat_i in dat_x:
+#                                 dat_z = dat_i.get('Stock').get(str(entry.instrument_token)).get('last_price')
+#                             current_day_last_price = dat_z
+#                             # print('current_day_last_price:',current_day_last_price)
+#
+#                             t_value.append(round((quantity * current_day_last_price), 2))
+#                             # print('sada:', float(entry.buy_price) * quantity)
+#                             t_cost.append(round((float(entry.buy_price)) * quantity, 2))
+#                             stock_val[entry.tradingsymbol] = round((quantity * current_day_last_price), 2)
+#
+#                         # total_value = sum(t_value)
+#                         total_value = 78980
+#                         # total_cost = sum(t_cost)
+#                         total_cost = 78100
+#                         # total_quantity = sum(t_quantity)
+#                         total_quantity = 65
+#
+#                         # yesterday_date = datetime.strptime(update_date, '%Y-%m-%d').date() - timedelta(days=1)
+#
+#                         # print('asdsas:',lat_entry_data)
+#                         if PortfolioPerformance.objects.filter(user_id_id=i, portfolio_id_id=j):
+#                             lat_entry_data = \
+#                                 PortfolioPerformance.objects.filter(user_id_id=i, portfolio_id_id=j).order_by('-date')[0]
+#                             dte_date = lat_entry_data.date
+#
+#                         else:
+#                             dte_date = None
+#                             pass
+#                         # if PortfolioPerformance.objects.filter(user_id_id=i, portfolio_id_id=j, date=yesterday_date):
+#                         if PortfolioPerformance.objects.filter(user_id_id=i, portfolio_id_id=j, date=dte_date):
+#                             try:
+#                                 # prev_data = PortfolioPerformance.objects.get(user_id_id=i, portfolio_id_id=j,
+#                                 #                                              date=yesterday_date)
+#                                 prev_data = PortfolioPerformance.objects.get(user_id_id=i, portfolio_id_id=j,
+#                                                                              date=lat_entry_data.date)
+#                                 prev_tot_val = prev_data.total_value
+#
+#                                 prev_daily_return = prev_data.daily_return
+#                                 prev_cummeletive_return = prev_data.cummeletive_return
+#
+#                                 prev_sym = prev_data.symbols
+#                                 dict_val = prev_data.stock_value
+#                                 # symm = ['AKSHARCHEM', 'AKASH', 'AJANTPHARM', 'AIAENG', 'AAVAS', 'AARVI', 'AARTIDRUGS']
+#                                 if set(prev_sym) == set(sym):  # symm i.e sym
+#                                     daily_return = ((float(total_value) - float(prev_tot_val)) / float(prev_tot_val)) * 100
+#
+#                                 else:
+#                                     t_diff_sym = []
+#                                     diff_sym = set(prev_sym).difference(sym)
+#                                     for dt in list(diff_sym):
+#                                         val_data = dict_val.get(dt)
+#                                         t_diff_sym.append(val_data)
+#                                     # daily_return = ((float(total_value) - (float(prev_tot_val) - 25210)) / (
+#                                     #         float(prev_tot_val) - 25210)) * 100
+#                                     daily_return = ((float(total_value) - (float(prev_tot_val) - sum(t_diff_sym))) / (
+#                                             float(prev_tot_val) - sum(t_diff_sym))) * 100
+#
+#                                 cummeletive_return = daily_return + prev_cummeletive_return
+#                             except:
+#                                 pass
+#                         else:
+#                             daily_return = 0
+#                             cummeletive_return = 0
+#
+#                         if PortfolioPerformance.objects.filter(user_id_id=i, portfolio_id_id=j, date=update_date):
+#                             data_dl = PortfolioPerformance.objects.get(user_id_id=i, portfolio_id_id=j, date=update_date)
+#                             data_dl.delete()
+#                             performance = PortfolioPerformance(user_id_id=i, portfolio_id_id=j, total_cost=total_cost,
+#                                                                total_value=total_value, total_quantity=total_quantity,
+#                                                                date=update_date, daily_return=round(daily_return, 2),
+#                                                                cummeletive_return=round(cummeletive_return, 2), symbols=sym,
+#                                                                stock_value=stock_val)
+#                             performance.save()
+#                             # print('asdadadsasdasdsa:',data.symbols)
+#                             # data.total_cost = total_cost
+#                             # data.total_value = total_value
+#                             # data.total_quantity = total_quantity
+#                             # data.symbols = sym
+#                             # data.stock_value = stock_val
+#                             # data.daily_return = round(daily_return, 2)
+#                             # data.cummeletive_return = round(cummeletive_return, 2)
+#                             # data.save()
+#                         else:
+#                             performance = PortfolioPerformance(user_id_id=i, portfolio_id_id=j, total_cost=total_cost,
+#                                                                total_value=total_value, total_quantity=total_quantity,
+#                                                                date=update_date, daily_return=round(daily_return, 2),
+#                                                                cummeletive_return=round(cummeletive_return, 2), symbols=sym,
+#                                                                stock_value=stock_val)
+#                             performance.save()
+#
+#                 print("-----success-------------")
+#
+#                 return Response("success", status=status.HTTP_200_OK)
+#                 # return "success"
+#             except Exception as e:
+#                 print("-----error1-------------", e)
+#                 pass
+#         # except:
+#         except Exception as e:
+#             print("-----error2-------------", e)
+#             return Response("error", status=status.HTTP_200_OK)
+#             # return "error"
 
 
 def DailyUpdatePortfolioPerformanceData():

@@ -115,7 +115,7 @@ CELERY_BEAT_SCHEDULE = {
         # Remove old stock data on every weekday at 06:30AM
         'task': 'dashboard_api.tasks.get_dashboard_app_api_task',
         # 'schedule': timedelta(seconds=45),
-        'schedule': crontab(minute="00", hour="16", day_of_month="*", month_of_year="*", day_of_week="1-5"),
+        'schedule': crontab(minute="30", hour="16", day_of_month="*", month_of_year="*", day_of_week="1-5"),
     },
 
 

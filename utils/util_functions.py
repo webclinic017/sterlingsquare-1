@@ -1,7 +1,5 @@
 import os
-import pickle
 import datetime
-import random
 import json
 from django.core.cache import cache
 from django.db.models import Sum
@@ -24,7 +22,7 @@ from django.conf import settings
 
 def read_zerodha_credentials(model=False):
     """
-    Function to read Zerodha Credentials from the Pickle file.
+    Function to read Zerodha Credentials.
     """
     credentials = getattr(settings, "ZERODHA_CREDENTIALS")
     # if not credentials:
@@ -53,7 +51,7 @@ def read_zerodha_credentials(model=False):
 
 def read_zerodha_credentials_threaded(result, model=False):
     """
-    Function to read Zerodha Credentials from the Pickle file.
+    Function to read Zerodha Credentials.
     """
     credentials = getattr(settings, "ZERODHA_CREDENTIALS")
     # if not credentials:

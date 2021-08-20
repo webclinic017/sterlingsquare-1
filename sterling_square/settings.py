@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 import environ
-import datetime
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.integrations.redis import RedisIntegration
@@ -64,7 +63,6 @@ ZERODHA_CREDENTIALS = {
     "user_id": env("STERLING_SQUARE_USER_ID"),
     "user_pass": env("STERLING_SQUARE_PASS"),
     "user_pin": env("STERLING_SQUARE_PIN"),
-    "zerodha_creds_path": env("STERLING_SQUARE_ZERODHA_CREDENTIALS"),
 
 }
 

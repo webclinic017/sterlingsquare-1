@@ -1,63 +1,32 @@
-import os
 import time
-import requests
-
+import json
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+import urllib.parse as urlparse
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
 from django.conf import settings
 
-import pandas as pd
-from accounts.models import ZerodhaCredentials
-
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-
+from kiteconnect import KiteConnect
 
 class AutoLogin:
-
-    # CHROME_DRIVER_PATH = os.environ.get("CHROMEDRIVER")
-    # API_KEY = os.environ.get("STERLING_SQUARE_API_KEY")
-    # API_SECRET = os.environ.get("STERLING_SQUARE_API_SECRET")
-    #
-    # USER_ID = os.environ.get("STERLING_SQUARE_USER_ID")
-    # USER_PASS = os.environ.get("STERLING_SQUARE_PASS")
-    # USER_PIN = os.environ.get("STERLING_SQUARE_PIN")
-
     CHROME_DRIVER_PATH = settings.CHROME_DRIVER
     API_KEY = settings.ZERODHA_CREDENTIALS.get("api_key")
     API_SECRET = settings.ZERODHA_CREDENTIALS.get("api_secret")
-
     USER_ID = settings.ZERODHA_CREDENTIALS.get("user_id")
     USER_PASS = settings.ZERODHA_CREDENTIALS.get("user_pass")
     USER_PIN = settings.ZERODHA_CREDENTIALS.get("user_pin")
 
-    # APPLICATION_HOST = os.environ.get("STERLING_SQUARE_HOST")
-    APPLICATION_HOST = settings.APPLICATION_BASE_URL
-
-    # LOGIN_URL = "https://kite.zerodha.com/connect/login?v=3&api_key={}".format(API_KEY)
-    LOGIN_URL = "{}/auth/step_1".format(APPLICATION_HOST, API_KEY)
-
     def __init__(self):
         self.validate()
-        print("++"*2)
-        print(settings.CHROME_DRIVER, self.CHROME_DRIVER_PATH)
-        print("++"*2)
-
         self.chrome_options = Options()
         self.chrome_options.add_argument("--headless")
-        # if "localhost" in self.APPLICATION_HOST or "127.0.0.1" in self.APPLICATION_HOST:
-        #     pass
-        # else:
         self.chrome_options.add_argument("--no-sandbox")
         self.chrome_options.add_argument("--disable-gpu")
         self.chrome_options.add_argument("--window-size=1366x768")
         self.chrome_options.add_argument('--disable-dev-shm-usage')
-        # self.chrome_options.add_argument(
-        #     "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36"
-        # )
-        # print(self.LOGIN_URL)
-        self.driver = None
 
     def validate(self):
         if not self.CHROME_DRIVER_PATH:
@@ -80,86 +49,63 @@ class AutoLogin:
             # Error to raise when kite.zerodha.com user id is not provided path is not provided
             raise ValueError("Environment Variable 'STERLING_SQUARE_PIN' not provided.")
 
-        if not self.LOGIN_URL or "None" in self.LOGIN_URL:
-            raise ValueError("Invalid Login URL: {}".format(self.LOGIN_URL))
+    def open_driver(self, url):
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument('--headless')
+        chrome_options.add_argument('--disable-gpu')
+        chrome_options.add_argument('--no-sandbox')
+        browser = webdriver.Remote(self.CHROME_DRIVER_PATH, options=chrome_options)
+        browser.get(url)
+        time.sleep(5)
+        return browser
 
-    def perform_login(self, auto_close=False):
+    def update_credentials(self, data):
+        from accounts.models import ZerodhaCredentials
+        creds = ZerodhaCredentials.objects.all().order_by("id").first()
+        login_time = data.get("login_time")
+        if "login_time" in data:
+            del data['login_time']
+        if not creds:
+            creds = ZerodhaCredentials(credentials=json.dumps(data), login_time=login_time)
+            creds.save()
+        else:
+            creds.credentials = json.dumps(data)
+            creds.login_time = login_time
+            creds.save()
+
+    def perform_login(self, **kwargs):
         try:
-            print("++"*30)
-            print(self.CHROME_DRIVER_PATH)
-            print(self.APPLICATION_HOST)
-            print("++"*30)
-            if "localhost" in self.APPLICATION_HOST or "127.0.0.1" in self.APPLICATION_HOST:
-                self.driver = webdriver.Remote(self.CHROME_DRIVER_PATH, options=self.chrome_options)
-            else:
-                self.driver = webdriver.Remote(self.CHROME_DRIVER_PATH, options=self.chrome_options)
+            print("---------------AutoLogin--------------")
+            print("--Started--")
+            kite = KiteConnect(self.API_KEY, self.API_SECRET)
+            url = kite.login_url()
+            browser=self.open_driver(url)
+            print("--Running--")
+            wait = WebDriverWait(browser, 10)
+            wait.until(EC.presence_of_element_located((By.XPATH, '//input[@type="text"]')))\
+                            .send_keys(self.USER_ID)
 
-            resp = requests.get(self.LOGIN_URL)
+            wait.until(EC.presence_of_element_located((By.XPATH, '//input[@type="password"]')))\
+                .send_keys(self.USER_PASS)
+
+            wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@type="submit"]')))\
+                .submit()
+
+            wait.until(EC.presence_of_element_located((By.XPATH, '//input[@type="password"]'))).click()
             time.sleep(5)
-            url = resp.url
+            browser.find_element_by_xpath('//input[@type="password"]').send_keys(self.USER_PIN)
 
-            self.driver.delete_all_cookies()
-            self.driver.get(url)
+            wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@type="submit"]'))).submit()
+            wait.until(EC.url_contains('status=success'))
 
-            print("Waiting for Step 1 ...")
-            # Wait for the userid Input field
-            WebDriverWait(driver=self.driver, timeout=20).until(
-                EC.presence_of_element_located(
-                    (By.ID, 'userid')
-                )
-            )
-            print("Starting Step 1 ... ")
-            user_id = self.driver.find_element_by_id("userid")
-            user_id.send_keys(self.USER_ID)
+            tokenurl = browser.current_url
+            parsed = urlparse.urlparse(tokenurl)
+            request_token=urlparse.parse_qs(parsed.query)['request_token'][0]
+            print("--Closed--")
+            browser.close()
 
-            password = self.driver.find_element_by_id("password")
-            password.send_keys(self.USER_PASS)
+            data = kite.generate_session(request_token, api_secret=self.API_SECRET)
+            self.update_credentials(data)
 
-            first_button = self.driver.find_element_by_class_name("button-orange")
-            first_button.click()
-
-            print("Step 1 Done ...")
-            print("Waiting for Step 2 ...")
-
-            # Wait for the pin Input field
-            WebDriverWait(driver=self.driver, timeout=20).until(
-                EC.presence_of_element_located(
-                    (By.ID, 'pin')
-                )
-            )
-            print("Starting Step 2 ... ")
-
-            pin = self.driver.find_element_by_id('pin')
-            pin.send_keys(self.USER_PIN)
-
-            second_click = self.driver.find_element_by_class_name('button-orange')
-            second_click.click()
-            time.sleep(5)
-
-            "calling auth/step_2 api"
-            driver_url = self.driver.current_url
-            api_url = "{}/auth/step_2".format(self.APPLICATION_HOST) + "?" + driver_url.split('?')[-1]
-            requests.get(api_url)
-            time.sleep(5)
-            print("Step 2 Done ...")
-            # WebDriverWait(driver=self.driver, timeout=50).until(
-            #     EC.presence_of_element_located(
-            #         (By.CLASS_NAME, 'nav-outer')
-            #     )
-            # )
-            if auto_close:
-                self.close()
         except Exception as e:
-            import traceback
-            print(traceback.format_exc())
-            print("PERFORM LOGIN EXCEPTION ", e)
-
-            creds = ZerodhaCredentials.objects.all()
-            if creds.exists():
-                print(pd.DataFrame(creds.values()))
-
-            self.close()
-
-    def close(self):
-        if self.driver:
-            self.driver.quit()
+            print(e)

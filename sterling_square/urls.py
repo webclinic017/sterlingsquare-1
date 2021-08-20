@@ -12,8 +12,6 @@ urlpatterns = [
     path('debug', include(debug_toolbar.urls)),
     path("singleton", start_singleton),
     path("initialize", initialize),
-    path('auth/step_1', auth_step_1),
-    path('auth/step_2', auth_step_2),
 
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
